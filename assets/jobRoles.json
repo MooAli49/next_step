@@ -1,0 +1,90 @@
+[
+  { "id": "frontend-developer", "label": "Frontend Developer" },
+  { "id": "backend-developer", "label": "Backend Developer" },
+  { "id": "fullstack-developer", "label": "Full Stack Developer" },
+  { "id": "mobile-developer", "label": "Mobile Developer" },
+  { "id": "flutter-developer", "label": "Flutter Developer" },
+  { "id": "react-native-developer", "label": "React Native Developer" },
+  { "id": "ios-developer", "label": "iOS Developer" },
+  { "id": "android-developer", "label": "Android Developer" },
+
+  { "id": "ui-designer", "label": "UI Designer" },
+  { "id": "ux-designer", "label": "UX Designer" },
+  { "id": "ui-ux-designer", "label": "UI/UX Designer" },
+  { "id": "product-designer", "label": "Product Designer" },
+  { "id": "graphic-designer", "label": "Graphic Designer" },
+  { "id": "motion-designer", "label": "Motion Designer" },
+  { "id": "brand-designer", "label": "Brand Designer" },
+
+  { "id": "software-engineer", "label": "Software Engineer" },
+  { "id": "senior-software-engineer", "label": "Senior Software Engineer" },
+  { "id": "lead-software-engineer", "label": "Lead Software Engineer" },
+  { "id": "principal-engineer", "label": "Principal Engineer" },
+
+  { "id": "devops-engineer", "label": "DevOps Engineer" },
+  { "id": "site-reliability-engineer", "label": "Site Reliability Engineer" },
+  { "id": "cloud-engineer", "label": "Cloud Engineer" },
+  { "id": "platform-engineer", "label": "Platform Engineer" },
+
+  { "id": "data-analyst", "label": "Data Analyst" },
+  { "id": "data-scientist", "label": "Data Scientist" },
+  { "id": "machine-learning-engineer", "label": "Machine Learning Engineer" },
+  { "id": "ai-engineer", "label": "AI Engineer" },
+  { "id": "big-data-engineer", "label": "Big Data Engineer" },
+
+  { "id": "qa-engineer", "label": "QA Engineer" },
+  { "id": "test-automation-engineer", "label": "Test Automation Engineer" },
+  { "id": "manual-tester", "label": "Manual Tester" },
+
+  { "id": "product-manager", "label": "Product Manager" },
+  { "id": "technical-product-manager", "label": "Technical Product Manager" },
+  { "id": "project-manager", "label": "Project Manager" },
+  { "id": "program-manager", "label": "Program Manager" },
+  { "id": "scrum-master", "label": "Scrum Master" },
+
+  { "id": "business-analyst", "label": "Business Analyst" },
+  { "id": "system-analyst", "label": "System Analyst" },
+
+  { "id": "security-engineer", "label": "Security Engineer" },
+  { "id": "cybersecurity-analyst", "label": "Cybersecurity Analyst" },
+  { "id": "penetration-tester", "label": "Penetration Tester" },
+
+  { "id": "blockchain-developer", "label": "Blockchain Developer" },
+  { "id": "web3-developer", "label": "Web3 Developer" },
+  { "id": "smart-contract-developer", "label": "Smart Contract Developer" },
+
+  { "id": "game-developer", "label": "Game Developer" },
+  { "id": "unity-developer", "label": "Unity Developer" },
+  { "id": "unreal-engine-developer", "label": "Unreal Engine Developer" },
+
+  { "id": "embedded-systems-engineer", "label": "Embedded Systems Engineer" },
+  { "id": "iot-engineer", "label": "IoT Engineer" },
+  { "id": "robotics-engineer", "label": "Robotics Engineer" },
+
+  { "id": "technical-writer", "label": "Technical Writer" },
+  { "id": "developer-advocate", "label": "Developer Advocate" },
+
+  { "id": "it-support-specialist", "label": "IT Support Specialist" },
+  { "id": "system-administrator", "label": "System Administrator" },
+  { "id": "network-engineer", "label": "Network Engineer" },
+
+  { "id": "solutions-architect", "label": "Solutions Architect" },
+  { "id": "enterprise-architect", "label": "Enterprise Architect" },
+
+  { "id": "startup-founder", "label": "Startup Founder" },
+  { "id": "cto", "label": "Chief Technology Officer (CTO)" },
+  { "id": "tech-lead", "label": "Tech Lead" },
+
+  { "id": "intern-software-developer", "label": "Software Developer Intern" },
+  { "id": "junior-developer", "label": "Junior Developer" },
+  { "id": "graduate-engineer", "label": "Graduate Engineer" },
+
+  { "id": "freelance-developer", "label": "Freelance Developer" },
+  { "id": "consultant-software", "label": "Software Consultant" },
+
+  { "id": "erp-developer", "label": "ERP Developer" },
+  { "id": "crm-developer", "label": "CRM Developer" },
+
+  { "id": "low-code-developer", "label": "Low-Code Developer" },
+  { "id": "no-code-developer", "label": "No-Code Developer" }
+]
