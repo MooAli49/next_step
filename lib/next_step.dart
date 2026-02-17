@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:next_step/core/routing/routes.dart';
-import 'package:next_step/features/splash%20&%20onboarding/presentation/splash_screen.dart';
+
+import 'core/routing/routes.dart';
+import 'features/splash%20&%20onboarding/presentation/splash_screen.dart';
 
 class NextStep extends StatelessWidget {
   const NextStep({super.key});

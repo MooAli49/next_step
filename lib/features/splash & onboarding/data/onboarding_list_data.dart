@@ -1,5 +1,5 @@
-import 'package:next_step/core/constants/app_image.dart';
-import 'package:next_step/features/splash%20&%20onboarding/data/model/onboarding_model.dart';
+import '../../../core/constants/app_image.dart';
+import '../../splash%20&%20onboarding/data/model/onboarding_model.dart';
 
 List<OnboardingModel> onboardingListData = [
   OnboardingModel(

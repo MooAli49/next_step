@@ -1,95 +1,117 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:next_step/core/extension/spacer.dart';
-import 'package:next_step/core/styles/app_styles.dart';
-import 'package:next_step/core/theme/color_manager.dart';
-import 'package:next_step/features/splash%20&%20onboarding/data/onboarding_list_data.dart';
+import 'package:get/get.dart';
 
-class OnboardingScreen extends StatelessWidget {
+import '../../../core/extension/spacer.dart';
+import '../../../core/routing/routes.dart';
+import '../../../core/styles/app_styles.dart';
+import '../../../core/theme/color_manager.dart';
+import '../../../core/widgets/primary_button_widget.dart';
+import '../../splash%20&%20onboarding/data/onboarding_list_data.dart';
+import '../../splash%20&%20onboarding/presentation/widget/onboarding_dots_indicator_widget.dart';
+import '../../splash%20&%20onboarding/presentation/widget/onboarding_page_view_widget.dart';
+
+class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
+
+  @override
+  State<OnboardingScreen> createState() => _OnboardingScreenState();
+}
+
+class _OnboardingScreenState extends State<OnboardingScreen> {
+  late final PageController _pageController;
+  int _currentIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController();
+    _onPageChange();
+  }
+
+  void _onPageChange() {
+    _pageController.addListener(() {
+      int newIndex = _pageController.page?.round() ?? 0;
+      if (newIndex != _currentIndex) {
+        setState(() {
+          _currentIndex = newIndex;
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _pageController.removeListener(() {});
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  void _onNextPressed() {
+    if (_currentIndex < onboardingListData.length - 1) {
+      _pageController.nextPage(
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    } else {
+      _navigateToLogin();
+    }
+  }
+
+  void _onSkipPressed() {
+    _navigateToLogin();
+  }
+
+  void _navigateToLogin() {
+    Get.offAllNamed(Routes.login);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ColorManager.white,
-      body: PageView.builder(
-        itemCount: onboardingListData.length,
-        itemBuilder: (context, index) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset(
-                onboardingListData[index].image,
-                width: 316.w,
-                height: 316.h,
+      body: SafeArea(
+        child: Column(
+          children: [
+            OnboardingPageViewWidget(_pageController),
+            Padding(
+              padding: EdgeInsets.only(
+                left: 20.w,
+                right: 20.w,
+                top: 10.h,
+                bottom: 30.h,
               ),
-              VerticalSpace(55),
-              Text(
-                onboardingListData[index].title,
-                style: AppStyles.font20w700,
-                textAlign: TextAlign.center,
-              ),
-              VerticalSpace(18),
-              Text(
-                onboardingListData[index].description,
-                style: AppStyles.font16w400.copyWith(color: ColorManager.grey),
-                textAlign: TextAlign.center,
-              ),
-              VerticalSpace(43),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: List.generate(onboardingListData.length, (index) {
-                  return Container(
-                    width: 35.w,
-                    height: 5.h,
-                    margin: EdgeInsets.only(right: 5.w),
-                    decoration: BoxDecoration(
-                      color: index == 0
-                          ? ColorManager.primary
-                          : ColorManager.whiteED,
-                      borderRadius: BorderRadius.circular(24.r),
+              child: Column(
+                children: [
+                  OnboardingDotsIndicatorWidget(currentIndex: _currentIndex),
+                  VerticalSpace(40),
+                  PrimaryButtonWidget(
+                    buttonText: _currentIndex == onboardingListData.length - 1
+                        ? "Get Started"
+                        : "Next",
+                    onPressed: _onNextPressed,
+                  ),
+                  VerticalSpace(16),
+                  TextButton(
+                    onPressed: _onSkipPressed,
+                    style: TextButton.styleFrom(
+                      minimumSize: Size(double.infinity, 45.h),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12.r),
+                      ),
                     ),
-                  );
-                }),
-              ),
-              VerticalSpace(55),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: ColorManager.primary,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12.r),
+                    child: Text(
+                      "Skip",
+                      style: AppStyles.font16w600.copyWith(
+                        color: ColorManager.grey,
+                      ),
+                    ),
                   ),
-                ),
-                onPressed: () {
-                  // Handle button press
-                },
-                child: Text(
-                  "Get Started",
-                  // style: AppStyles.font16w700.copyWith(
-                  //   color: ColorManager.white,
-                  // ),
-                ),
+                ],
               ),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: ColorManager.primary,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12.r),
-                  ),
-                ),
-                onPressed: () {
-                  // Handle button press
-                },
-                child: Text(
-                  "Skip",
-                  // style: AppStyles.font16w700.copyWith(
-                  //   color: ColorManager.white,
-                  // ),
-                ),
-              ),
-            ],
-          );
-        },
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:next_step/core/constants/app_image.dart';
-import 'package:next_step/core/routing/routes.dart';
-import 'package:next_step/core/theme/color_manager.dart';
+
+import '../../../core/constants/app_image.dart';
+import '../../../core/routing/routes.dart';
+import '../../../core/theme/color_manager.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -33,16 +34,16 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   void _initAnimation() {
-     _controller = AnimationController(
+    _controller = AnimationController(
       duration: const Duration(seconds: 2),
       vsync: this,
     );
-    
+
     _slidingAnimation = Tween<Offset>(
       begin: const Offset(-1, 0),
       end: const Offset(5, 0),
     ).animate(_controller);
-    
+
     _controller.forward();
   }
 
