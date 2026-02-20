@@ -3,77 +3,26 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../../core/extension/spacer.dart';
-import '../../../core/routing/routes.dart';
 import '../../../core/styles/app_styles.dart';
 import '../../../core/theme/color_manager.dart';
 import '../../../core/widgets/primary_button_widget.dart';
+import '../../splash%20&%20onboarding/controller/onboarding_controller.dart';
 import '../../splash%20&%20onboarding/data/onboarding_list_data.dart';
 import '../../splash%20&%20onboarding/presentation/widget/onboarding_dots_indicator_widget.dart';
 import '../../splash%20&%20onboarding/presentation/widget/onboarding_page_view_widget.dart';
 
-class OnboardingScreen extends StatefulWidget {
+class OnboardingScreen extends StatelessWidget {
   const OnboardingScreen({super.key});
 
   @override
-  State<OnboardingScreen> createState() => _OnboardingScreenState();
-}
-
-class _OnboardingScreenState extends State<OnboardingScreen> {
-  late final PageController _pageController;
-  int _currentIndex = 0;
-
-  @override
-  void initState() {
-    super.initState();
-    _pageController = PageController();
-    _onPageChange();
-  }
-
-  void _onPageChange() {
-    _pageController.addListener(() {
-      int newIndex = _pageController.page?.round() ?? 0;
-      if (newIndex != _currentIndex) {
-        setState(() {
-          _currentIndex = newIndex;
-        });
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    _pageController.removeListener(() {});
-    _pageController.dispose();
-    super.dispose();
-  }
-
-  void _onNextPressed() {
-    if (_currentIndex < onboardingListData.length - 1) {
-      _pageController.nextPage(
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeInOut,
-      );
-    } else {
-      _navigateToLogin();
-    }
-  }
-
-  void _onSkipPressed() {
-    _navigateToLogin();
-  }
-
-  void _navigateToLogin() {
-    Get.offAllNamed(Routes.login);
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final onboardingController = Get.find<OnboardingController>();
     return Scaffold(
       backgroundColor: ColorManager.white,
       body: SafeArea(
         child: Column(
           children: [
-            OnboardingPageViewWidget(_pageController),
+            OnboardingPageViewWidget(onboardingController.pageController),
             Padding(
               padding: EdgeInsets.only(
                 left: 20.w,
@@ -83,17 +32,21 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               ),
               child: Column(
                 children: [
-                  OnboardingDotsIndicatorWidget(currentIndex: _currentIndex),
+                  OnboardingDotsIndicatorWidget(
+                    currentIndex: onboardingController.currentIndex.value,
+                  ),
                   VerticalSpace(40),
                   PrimaryButtonWidget(
-                    buttonText: _currentIndex == onboardingListData.length - 1
+                    buttonText:
+                        onboardingController.currentIndex.value ==
+                            onboardingListData.length - 1
                         ? "Get Started"
                         : "Next",
-                    onPressed: _onNextPressed,
+                    onPressed: onboardingController.onNextPressed,
                   ),
                   VerticalSpace(16),
                   TextButton(
-                    onPressed: _onSkipPressed,
+                    onPressed: onboardingController.onSkipPressed,
                     style: TextButton.styleFrom(
                       minimumSize: Size(double.infinity, 45.h),
                       shape: RoundedRectangleBorder(
