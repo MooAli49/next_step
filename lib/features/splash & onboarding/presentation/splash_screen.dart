@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 
 import '../../../core/constants/app_image.dart';
 import '../../../core/routing/routes.dart';
+import '../../../core/services/cache_service.dart';
 import '../../../core/theme/color_manager.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -28,7 +29,15 @@ class _SplashScreenState extends State<SplashScreen>
   void _animateToOnboarding() {
     Future.delayed(const Duration(seconds: 2), () {
       if (mounted) {
-        Get.offAllNamed(Routes.onboarding);
+        final cacheService = Get.find<CacheService>();
+
+        if (!cacheService.isOnboardingCompleted()) {
+          Get.offAllNamed(Routes.onboarding);
+        } else if (!cacheService.isLoggedIn()) {
+          Get.offAllNamed(Routes.login);
+        } else {
+          Get.offAllNamed(Routes.home);
+        }
       }
     });
   }

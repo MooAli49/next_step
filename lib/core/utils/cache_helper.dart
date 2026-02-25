@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -20,6 +22,8 @@ class CacheHelper {
       await _prefs.setBool(key, value);
     } else if (value is List<String>) {
       await _prefs.setStringList(key, value);
+    } else if (value is Map<String, dynamic>) {
+      await _prefs.setString(key, jsonEncode(value));
     } else {
       throw UnsupportedError('Unsupported Type');
     }
@@ -43,6 +47,14 @@ class CacheHelper {
 
   static List<String>? getStringList({required String key}) {
     return _prefs.getStringList(key);
+  }
+
+  static Map<String, dynamic>? getMap({required String key}) {
+    final jsonString = _prefs.getString(key);
+    if (jsonString != null) {
+      return jsonDecode(jsonString) as Map<String, dynamic>;
+    }
+    return null;
   }
 
   static Future<bool> delete({required String key}) async {

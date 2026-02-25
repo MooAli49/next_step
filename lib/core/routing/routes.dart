@@ -2,9 +2,12 @@ import 'package:get/get_navigation/src/routes/get_route.dart';
 
 import '../../features/auth/login_screen.dart';
 import '../../features/auth/register_screen.dart';
+import '../../features/home/presentation/home_screen.dart';
 import '../../features/profile_setup/complete_profile_screen.dart';
 import '../../features/splash%20&%20onboarding/presentation/onboarding_screen.dart';
 import '../../features/splash%20&%20onboarding/presentation/splash_screen.dart';
+import '../middleware/auth_middleware.dart';
+import '../middleware/guest_middleware.dart';
 import '../middleware/onboarding_middleware.dart';
 
 class Routes {
@@ -16,15 +19,31 @@ class Routes {
   static const String home = '/home';
 
   static List<GetPage> getPages = [
+    GetPage(name: splash, page: () => SplashScreen()),
     GetPage(
-      name: splash,
-      page: () => SplashScreen(),
+      name: onboarding,
+      page: () => OnboardingScreen(),
       middlewares: [OnboardingMiddleware()],
     ),
-    GetPage(name: onboarding, page: () => OnboardingScreen()),
-    GetPage(name: login, page: () => LoginScreen()),
-    GetPage(name: register, page: () => RegisterScreen()),
-    GetPage(name: profile, page: () => CompleteProfileScreen()),
-    // GetPage(name: home, page: () => HomeScreen()),
+    GetPage(
+      name: login,
+      page: () => LoginScreen(),
+      middlewares: [GuestMiddleware()],
+    ),
+    GetPage(
+      name: register,
+      page: () => RegisterScreen(),
+      middlewares: [GuestMiddleware()],
+    ),
+    GetPage(
+      name: profile,
+      page: () => CompleteProfileScreen(),
+      middlewares: [AuthMiddleware()],
+    ),
+    GetPage(
+      name: home,
+      page: () => HomeScreen(),
+      middlewares: [AuthMiddleware()],
+    ),
   ];
 }

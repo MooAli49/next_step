@@ -4,15 +4,15 @@ import 'package:get/get.dart';
 import '../routing/routes.dart';
 import '../services/cache_service.dart';
 
-class OnboardingMiddleware extends GetMiddleware {
+class AuthMiddleware extends GetMiddleware {
   @override
   RouteSettings? redirect(String? route) {
-    bool isOnboardingCompleted = Get.find<CacheService>()
-        .isOnboardingCompleted();
+    final cacheService = Get.find<CacheService>();
 
-    if (isOnboardingCompleted) {
+    if (!cacheService.isLoggedIn()) {
       return const RouteSettings(name: Routes.login);
     }
+
     return null;
   }
 }
