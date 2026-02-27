@@ -33,7 +33,7 @@ class ProfilePictureWidget extends GetView<CompleteProfileController> {
             decoration: BoxDecoration(
               color: Colors.grey[200],
               borderRadius: BorderRadius.circular(16.r),
-              image: controller.profilePiturePath.isNotEmpty
+              image: controller.profilePicturePath.isNotEmpty
                   ? DecorationImage(
                       image: NetworkImage(
                         "https://via.placeholder.com/150",
@@ -42,7 +42,7 @@ class ProfilePictureWidget extends GetView<CompleteProfileController> {
                     )
                   : null,
             ),
-            child: controller.profilePiturePath.isNotEmpty
+            child: controller.profilePicturePath.isNotEmpty
                 ? null
                 : Icon(
                     Icons.work_outline, // Using a generic icon as placeholder

@@ -28,7 +28,7 @@ class AuthLogoWidget extends StatelessWidget {
           description,
           style: AppStyles.font13w500.copyWith(
             color: ColorManager.grey,
-            height: 1.5.sp,
+            height: 1.5,
           ),
           textAlign: TextAlign.center,
         ),

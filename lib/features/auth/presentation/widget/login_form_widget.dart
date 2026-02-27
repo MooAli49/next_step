@@ -43,8 +43,8 @@ class LoginFormWidget extends GetView<AuthController> {
                   onPressed: controller.toggleObscurePassword,
                   icon: Icon(
                     controller.obscurePassword
-                        ? Icons.visibility
-                        : Icons.visibility_off,
+                        ? Icons.visibility_off
+                        : Icons.visibility,
                     size: 24.sp,
                     color: ColorManager.grey,
                   ),

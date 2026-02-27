@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
-// import 'package:image_picker/image_picker.dart'; // Will add image_picker dependency later if needed, user didn't specify to add it but implied functionality. I might need to mock or ask user. For now I'll assume standard implementation and maybe just use a placeholder if package not available.
-// Actually, user said "do this feature", implying full implementation. I see `image_picker` is not in pubspec. I will stick to UI first and standard logic.
 
 import '../models/country_model.dart';
 import '../models/job_role_model.dart';
@@ -22,7 +20,7 @@ class CompleteProfileController extends GetxController {
   // Selections
   var selectedJobRoles = <String>[].obs; // storing IDs
   var selectedCountries = <String>[].obs; // storing Codes
-  var profilePiturePath = ''.obs;
+  var profilePicturePath = ''.obs;
 
   @override
   void onInit() {
@@ -105,6 +103,6 @@ class CompleteProfileController extends GetxController {
   }
 
   void updateProfilePicture(String path) {
-    profilePiturePath.value = path;
+    profilePicturePath.value = path;
   }
 }

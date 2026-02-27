@@ -12,10 +12,7 @@ class CompleteProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO Initialize controller in di file
-    final CompleteProfileController controller = Get.put(
-      CompleteProfileController(),
-    );
+    final CompleteProfileController controller = Get.find<CompleteProfileController>();
 
     return Scaffold(
       backgroundColor: Colors.white,
