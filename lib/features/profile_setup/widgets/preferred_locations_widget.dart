@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../../core/extension/spacer.dart';
 import '../controllers/complete_profile_controller.dart';
 
 class PreferredLocationsWidget extends GetView<CompleteProfileController> {
@@ -29,11 +30,11 @@ class PreferredLocationsWidget extends GetView<CompleteProfileController> {
         Expanded(
           child: Obx(() {
             if (controller.countries.isEmpty) {
-              return const Center(child: CircularProgressIndicator());
+              return const Center(child: Text('No countries available'));
             }
             return ListView.separated(
               itemCount: controller.countries.length,
-              separatorBuilder: (context, index) => SizedBox(height: 12.h),
+              separatorBuilder: (context, index) => VerticalSpace(12),
               itemBuilder: (context, index) {
                 final country = controller.countries[index];
                 return Obx(() {

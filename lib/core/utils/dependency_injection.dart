@@ -6,11 +6,17 @@ import '../../features/auth/data/datasources/supabase_data_source.dart';
 import '../../features/auth/data/repositories/supabase_repository_impl.dart';
 import '../../features/auth/domain/repositories/auth_repo.dart';
 import '../../features/auth/presentation/controller/auth_controller.dart';
+import '../../features/profile_setup/controllers/complete_profile_controller.dart';
 import '../../features/splash%20&%20onboarding/controller/onboarding_controller.dart';
 
 void setupDependencyInjection() {
   setupOnboardingDI();
   _setupAuthDI();
+  _setupProfileDI();
+}
+
+void _setupProfileDI() {
+  Get.lazyPut<CompleteProfileController>(() => CompleteProfileController());
 }
 
 void setupOnboardingDI() {

@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../../core/extension/spacer.dart';
 import '../controllers/complete_profile_controller.dart';
 
 class ProfilePictureWidget extends GetView<CompleteProfileController> {
@@ -17,7 +20,7 @@ class ProfilePictureWidget extends GetView<CompleteProfileController> {
             context,
           ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
         ),
-        SizedBox(height: 8.h),
+        VerticalSpace(8),
         Text(
           "Upload a clear, professional headshot to make a strong first impression on recruiters and potential employers.",
           textAlign: TextAlign.center,
@@ -33,36 +36,43 @@ class ProfilePictureWidget extends GetView<CompleteProfileController> {
             decoration: BoxDecoration(
               color: Colors.grey[200],
               borderRadius: BorderRadius.circular(16.r),
-              image: controller.profilePicturePath.isNotEmpty
-                  ? DecorationImage(
-                      image: NetworkImage(
-                        "https://via.placeholder.com/150",
-                      ), // Placeholder for now or FileImage if we had io
-                      fit: BoxFit.cover,
-                    )
-                  : null,
             ),
             child: controller.profilePicturePath.isNotEmpty
-                ? null
+                ? ClipRRect(
+                    borderRadius: BorderRadius.circular(16.r),
+                    child: Image.file(
+                      File(controller.profilePicturePath.value),
+                      fit: BoxFit.cover,
+                      width: 150.w,
+                      height: 150.w,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Icon(
+                          Icons.error_outline,
+                          size: 60.sp,
+                          color: Colors.red[400],
+                        );
+                      },
+                    ),
+                  )
                 : Icon(
-                    Icons.work_outline, // Using a generic icon as placeholder
+                    Icons.person_outline,
                     size: 60.sp,
                     color: Colors.grey[400],
                   ),
           );
         }),
-        SizedBox(height: 24.h),
+        VerticalSpace(24),
         Text(
           "Add Your Photo",
           style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
         ),
-        SizedBox(height: 8.h),
+        VerticalSpace(8),
         Text(
           "Upload a professional photo to complete your profile",
           textAlign: TextAlign.center,
           style: TextStyle(color: Colors.grey, fontSize: 14.sp),
         ),
-        SizedBox(height: 32.h),
+        VerticalSpace(24),
         SizedBox(
           width: double.infinity,
           child: ElevatedButton.icon(
@@ -97,32 +107,29 @@ class ProfilePictureWidget extends GetView<CompleteProfileController> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 16.h),
+                      VerticalSpace(16),
                       _buildOption(
                         context,
                         icon: Icons.camera_alt,
                         label: "Take Photo",
                         subLabel: "Use your camera",
                         onTap: () {
-                          // Mock functionality
                           Get.back();
-                          controller.updateProfilePicture("mock_path_camera");
+                          controller.pickPictureFromCamera();
                         },
                       ),
-                      SizedBox(height: 16.h),
+                      VerticalSpace(16),
                       _buildOption(
                         context,
-                        icon: Icons
-                            .photo_library, // Changed to standard material icon
+                        icon: Icons.photo_library,
                         label: "Choose from Gallery",
                         subLabel: "Select existing photo",
                         onTap: () {
-                          // Mock functionality
                           Get.back();
-                          controller.updateProfilePicture("mock_path_gallery");
+                          controller.pickPictureFromGallery();
                         },
                       ),
-                      SizedBox(height: 24.h),
+                      VerticalSpace(24),
                       SizedBox(
                         width: double.infinity,
                         child: TextButton(

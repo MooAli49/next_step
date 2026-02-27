@@ -1,12 +1,13 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 
-
-import '../models/country_model.dart';
-import '../models/job_role_model.dart';
+import '../data/models/country_model.dart';
+import '../data/models/job_role_model.dart';
 
 class CompleteProfileController extends GetxController {
   // Page Controller
@@ -26,8 +27,8 @@ class CompleteProfileController extends GetxController {
   void onInit() {
     super.onInit();
     pageController = PageController();
-    loadCountries();
     loadJobRoles();
+    loadCountries();
   }
 
   @override
@@ -43,10 +44,6 @@ class CompleteProfileController extends GetxController {
         curve: Curves.easeIn,
       );
       currentPage.value++;
-    } else {
-      // Submit or Finish
-      print("Profile Completed");
-      // Navigate or API call
     }
   }
 
@@ -70,7 +67,7 @@ class CompleteProfileController extends GetxController {
           .map((json) => CountryModel.fromJson(json))
           .toList();
     } catch (e) {
-      print("Error loading countries: $e");
+      log("Error loading countries: $e");
     }
   }
 
@@ -82,7 +79,7 @@ class CompleteProfileController extends GetxController {
       final List<dynamic> data = json.decode(response);
       jobRoles.value = data.map((json) => JobRoleModel.fromJson(json)).toList();
     } catch (e) {
-      print("Error loading job roles: $e");
+      log("Error loading job roles: $e");
     }
   }
 
@@ -102,7 +99,31 @@ class CompleteProfileController extends GetxController {
     }
   }
 
-  void updateProfilePicture(String path) {
+  Future<void> pickPictureFromGallery() async {
+    try {
+      final ImagePicker picker = ImagePicker();
+      final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+      if (image != null) {
+        _updateProfilePicture(image.path);
+      }
+    } catch (e) {
+      log("Error picking image: $e");
+    }
+  }
+
+  Future<void> pickPictureFromCamera() async {
+    try {
+      final ImagePicker picker = ImagePicker();
+      final XFile? image = await picker.pickImage(source: ImageSource.camera);
+      if (image != null) {
+        _updateProfilePicture(image.path);
+      }
+    } catch (e) {
+      log("Error picking image: $e");
+    }
+  }
+
+  void _updateProfilePicture(String path) {
     profilePicturePath.value = path;
   }
 }
