@@ -100,7 +100,7 @@ class CompleteProfileScreen extends StatelessWidget {
           child: ElevatedButton(
             onPressed: () {
               if (controller.currentPage.value == 2) {
-                Get.offAllNamed(Routes.home);
+                Get.offAllNamed(Routes.layout);
               } else {
                 controller.nextPage();
               }

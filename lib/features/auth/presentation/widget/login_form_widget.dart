@@ -99,7 +99,7 @@ class LoginFormWidget extends GetView<AuthController> {
                                 colorText: Colors.white,
                                 snackPosition: SnackPosition.BOTTOM,
                               );
-                              Get.offAllNamed(Routes.home);
+                              Get.offAllNamed(Routes.layout);
                             }
                           }
                         },
