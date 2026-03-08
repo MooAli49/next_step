@@ -91,27 +91,27 @@ class CompleteProfileScreen extends GetView<CompleteProfileController> {
             ),
           ],
         ),
-        child: SizedBox(
-          width: double.infinity,
-          child: ElevatedButton(
-            onPressed: controller.isLoading
-                ? null
-                : () async {
-                    if (controller.isLastPage) {
-                      await controller.completeProfile();
-                    } else {
-                      controller.nextPage();
-                    }
-                  },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.teal,
-              padding: EdgeInsets.symmetric(vertical: 16.h),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.r),
+        child: Obx(
+          () => SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: controller.isLoading.value
+                  ? null
+                  : () async {
+                      if (controller.isLastPage) {
+                        await controller.completeProfile();
+                      } else {
+                        controller.nextPage();
+                      }
+                    },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.teal,
+                padding: EdgeInsets.symmetric(vertical: 16.h),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.r),
+                ),
               ),
-            ),
-            child: Obx(
-              () => controller.isLoading
+              child: controller.isLoading.value
                   ? const SizedBox(
                       width: 24,
                       height: 24,

@@ -25,7 +25,7 @@ class CompleteProfileController extends GetxController {
 
   bool get isLastPage => currentPage.value == 2;
 
-  bool isLoading = false;
+  var isLoading = false.obs;
 
   // Data Lists
   var countries = <CountryModel>[].obs;
@@ -165,16 +165,14 @@ class CompleteProfileController extends GetxController {
   }
 
   Future<void> completeProfile() async {
-    isLoading = true;
-    update();
+    isLoading.value = true;
 
     // Upload picture to Supabase storage first
     String? imageUrl;
     if (profilePicturePath.value.isNotEmpty) {
       imageUrl = await _uploadProfilePicture();
       if (imageUrl == null) {
-        isLoading = false;
-        update();
+        isLoading.value = false;
         Get.snackbar(
           'Upload Failed',
           'Could not upload profile picture. Please try again.',
@@ -194,14 +192,10 @@ class CompleteProfileController extends GetxController {
       ),
     );
 
-    isLoading = true;
-    update();
+    isLoading.value = false;
 
     result.when(
       onSuccess: (data) {
-        isLoading = false;
-        update();
-
         // Cache the updated user data
         CacheHelper.set(key: CacheConstants.userData, value: data.toJson());
         CacheHelper.set(key: CacheConstants.isProfileCompleted, value: true);
@@ -218,9 +212,6 @@ class CompleteProfileController extends GetxController {
         Get.offAllNamed(Routes.layout);
       },
       onError: (error) {
-        isLoading = false;
-        update();
-
         log("Error completing profile: ${error.message}");
         Get.snackbar(
           "Error",

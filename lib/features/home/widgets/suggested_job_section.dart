@@ -85,7 +85,7 @@ class SuggestedJobSection extends StatelessWidget {
                         ),
                         SizedBox(width: 4.w),
                         Text(
-                          'Califorina',
+                          'California',
                           style: TextStyle(
                             color: ColorManager.black,
                             fontSize: 14.sp,

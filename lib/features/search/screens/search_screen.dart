@@ -35,7 +35,7 @@ class _SearchScreenState extends State<SearchScreen> {
                           SearchJobCardWidget(
                             title: 'Ui Designer',
                             company: 'Google',
-                            location: 'Califorina',
+                            location: 'California',
                             price: '\$15/Mo',
                             imagePath: 'assets/images/google.png',
                             isBookmarked: true,

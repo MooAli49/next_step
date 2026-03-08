@@ -28,13 +28,13 @@ class AuthApiDataSource extends AuthRemoteDataSource {
         (json) => LoginResponseModel.fromJson(json),
       );
 
-      log('AuthRemoteDataSource.register: response: ${apiResponse.message}');
+      log('AuthRemoteDataSource.login: response: ${apiResponse.message}');
 
       if (apiResponse.data == null) {
         return ApiResult.error(
           ApiResponseModel(
             success: false,
-            message: 'Register failed: response data is null',
+            message: 'Login failed: response data is null',
             statusCode: apiResponse.statusCode,
           ),
         );
@@ -44,10 +44,10 @@ class AuthApiDataSource extends AuthRemoteDataSource {
     } on Exception catch (e) {
       final apiResponse = ApiResponseModel.fromJson(
         e is DioException && e.response != null ? e.response!.data : null,
-        (json) => RegisterResponseModel.fromJson(json),
+        (json) => LoginResponseModel.fromJson(json),
       );
 
-      log('AuthRemoteDataSource.register: exception occurred: $apiResponse');
+      log('AuthRemoteDataSource.login: exception occurred: $apiResponse');
       return ApiResult.error(apiResponse);
     }
   }

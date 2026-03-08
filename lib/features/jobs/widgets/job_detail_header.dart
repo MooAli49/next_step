@@ -73,7 +73,7 @@ class JobDetailHeader extends StatelessWidget {
             ),
             SizedBox(width: 8.w),
             Text(
-              'Califorina',
+              'California',
               style: TextStyle(
                 color: ColorManager.black,
                 fontSize: 14.sp,
