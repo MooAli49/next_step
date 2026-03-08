@@ -7,6 +7,10 @@ import '../../features/auth/data/repositories/api_auth_repository.dart';
 import '../../features/auth/domain/repositories/auth_repo.dart';
 import '../../features/auth/presentation/controller/auth_controller.dart';
 import '../../features/profile_setup/controllers/complete_profile_controller.dart';
+import '../../features/profile_setup/data/datasources/profile_api_data_source.dart';
+import '../../features/profile_setup/data/datasources/profile_data_source.dart';
+import '../../features/profile_setup/data/repositories/api_profile_repo.dart';
+import '../../features/profile_setup/domain/repositories/profile_repo.dart';
 import '../../features/splash%20&%20onboarding/controller/onboarding_controller.dart';
 
 void setupDependencyInjection() {
@@ -16,7 +20,11 @@ void setupDependencyInjection() {
 }
 
 void _setupProfileDI() {
-  Get.lazyPut<CompleteProfileController>(() => CompleteProfileController());
+  Get.lazyPut<ProfileDataSource>(() => ProfileApiDataSource());
+  Get.lazyPut<ProfileRepo>(() => ApiProfileRepo(Get.find<ProfileDataSource>()));
+  Get.lazyPut<CompleteProfileController>(
+    () => CompleteProfileController(Get.find<ProfileRepo>()),
+  );
 }
 
 void setupOnboardingDI() {

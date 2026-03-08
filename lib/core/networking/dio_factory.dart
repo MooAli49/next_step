@@ -25,13 +25,7 @@ class DioFactory {
           final requiresToken = options.extra["requiresToken"] ?? true;
 
           // Endpoints that don't need token
-          final noAuthEndpoints = [
-            ApiConstant.loginEp,
-            ApiConstant.registerEp,
-            // ApiConstant.getAuthauthenticatedUserEp,
-            // ApiConstant.updataUserProfileEP,
-            // ApiConstant.patchUserProfileEP
-          ];
+          final noAuthEndpoints = [ApiConstant.loginEp, ApiConstant.registerEp];
 
           if (requiresToken && !noAuthEndpoints.contains(options.path)) {
             final accessToken = await CacheHelper.getSecureData(
@@ -86,34 +80,4 @@ class DioFactory {
       ),
     );
   }
-
-  // ==================
-  // Refresh Token Logic
-  // ==================
-  // Future<Map?> _refreshToken() async {
-  //   try {
-  //     final token = await CacheHelper.getSecureData(
-  //       key: CacheConstants.accessToken,
-  //     );
-  //     final refreshToken = await CacheHelper.getSecureData(
-  //       key: CacheConstants.refreshToken,
-  //     );
-
-  //     if (token == null && refreshToken == null) return null;
-
-  //     final response = await _dio.post(
-  //       ApiConstant.generateNewTokenEp,
-  //       data: {"token": token, "refreshToken": refreshToken},
-  //     );
-
-  //     // ⚠️ تأكد من اسم الفيلد اللي راجع من الـ API
-  //     return {
-  //       "token": response.data['token'],
-  //       "refreshToken": response.data['refreshToken'],
-  //     };
-  //   } catch (e) {
-  //     log("❌ Error while refreshing token: $e");
-  //     return null;
-  //   }
-  // }
 }

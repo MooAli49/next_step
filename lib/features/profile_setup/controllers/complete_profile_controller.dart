@@ -1,18 +1,31 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../../../core/constants/cache_constants.dart';
+import '../../../core/routing/routes.dart';
+import '../../../core/utils/cache_helper.dart';
+import '../data/models/complete_profile_request_model.dart';
 import '../data/models/country_model.dart';
 import '../data/models/job_role_model.dart';
+import '../domain/repositories/profile_repo.dart';
 
 class CompleteProfileController extends GetxController {
-  // Page Controller
+  final ProfileRepo profileRepo;
+
+  CompleteProfileController(this.profileRepo);
   late PageController pageController;
   var currentPage = 0.obs;
+
+  bool get isLastPage => currentPage.value == 2;
+
+  bool isLoading = false;
 
   // Data Lists
   var countries = <CountryModel>[].obs;
@@ -125,5 +138,98 @@ class CompleteProfileController extends GetxController {
 
   void _updateProfilePicture(String path) {
     profilePicturePath.value = path;
+  }
+
+  Future<String?> _uploadProfilePicture() async {
+    if (profilePicturePath.value.isEmpty) return null;
+
+    try {
+      final file = File(profilePicturePath.value);
+      final fileExt = file.path.split('.').last;
+      final fileName =
+          'profile_${DateTime.now().millisecondsSinceEpoch}.$fileExt';
+
+      final storage = Supabase.instance.client.storage;
+
+      await storage
+          .from('profile-pictures')
+          .upload(fileName, file, fileOptions: const FileOptions(upsert: true));
+
+      final publicUrl = storage.from('profile-pictures').getPublicUrl(fileName);
+
+      return publicUrl;
+    } catch (e) {
+      log('Error uploading profile picture: $e');
+      return null;
+    }
+  }
+
+  Future<void> completeProfile() async {
+    isLoading = true;
+    update();
+
+    // Upload picture to Supabase storage first
+    String? imageUrl;
+    if (profilePicturePath.value.isNotEmpty) {
+      imageUrl = await _uploadProfilePicture();
+      if (imageUrl == null) {
+        isLoading = false;
+        update();
+        Get.snackbar(
+          'Upload Failed',
+          'Could not upload profile picture. Please try again.',
+          backgroundColor: Colors.redAccent,
+          colorText: Colors.white,
+          snackPosition: SnackPosition.BOTTOM,
+        );
+        return;
+      }
+    }
+
+    final result = await profileRepo.completeProfile(
+      CompleteProfileRequestModel(
+        jobRoles: selectedJobRoles,
+        countries: selectedCountries,
+        imageUrl: imageUrl ?? '',
+      ),
+    );
+
+    isLoading = true;
+    update();
+
+    result.when(
+      onSuccess: (data) {
+        isLoading = false;
+        update();
+
+        // Cache the updated user data
+        CacheHelper.set(key: CacheConstants.userData, value: data.toJson());
+        CacheHelper.set(key: CacheConstants.isProfileCompleted, value: true);
+
+        Get.snackbar(
+          'Welcome ${data.fullName ?? 'Guest'}',
+          'Your profile has been completed successfully!',
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+          snackPosition: SnackPosition.BOTTOM,
+        );
+
+        log("Profile completed successfully: $data");
+        Get.offAllNamed(Routes.layout);
+      },
+      onError: (error) {
+        isLoading = false;
+        update();
+
+        log("Error completing profile: ${error.message}");
+        Get.snackbar(
+          "Error",
+          error.message ?? "An error occurred while completing your profile.",
+          backgroundColor: Colors.redAccent,
+          colorText: Colors.white,
+          snackPosition: SnackPosition.BOTTOM,
+        );
+      },
+    );
   }
 }

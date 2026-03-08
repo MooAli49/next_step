@@ -36,4 +36,8 @@ class CacheService extends GetxService {
   bool hasUserData() {
     return CacheHelper.getMap(key: CacheConstants.userData) != null;
   }
+
+  bool isProfileCompleted() {
+    return CacheHelper.getBool(key: CacheConstants.isProfileCompleted) ?? false;
+  }
 }

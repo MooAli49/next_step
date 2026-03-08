@@ -2,20 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-import '../../core/routing/routes.dart';
 import 'controllers/complete_profile_controller.dart';
 import 'widgets/career_interests_widget.dart';
 import 'widgets/preferred_locations_widget.dart';
 import 'widgets/profile_picture_widget.dart';
 
-class CompleteProfileScreen extends StatelessWidget {
+class CompleteProfileScreen extends GetView<CompleteProfileController> {
   const CompleteProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final CompleteProfileController controller =
-        Get.find<CompleteProfileController>();
-
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -98,13 +94,15 @@ class CompleteProfileScreen extends StatelessWidget {
         child: SizedBox(
           width: double.infinity,
           child: ElevatedButton(
-            onPressed: () {
-              if (controller.currentPage.value == 2) {
-                Get.offAllNamed(Routes.layout);
-              } else {
-                controller.nextPage();
-              }
-            },
+            onPressed: controller.isLoading
+                ? null
+                : () async {
+                    if (controller.isLastPage) {
+                      await controller.completeProfile();
+                    } else {
+                      controller.nextPage();
+                    }
+                  },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.teal,
               padding: EdgeInsets.symmetric(vertical: 16.h),
@@ -113,14 +111,23 @@ class CompleteProfileScreen extends StatelessWidget {
               ),
             ),
             child: Obx(
-              () => Text(
-                controller.currentPage.value == 2 ? "Complete" : "Next",
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
+              () => controller.isLoading
+                  ? const SizedBox(
+                      width: 24,
+                      height: 24,
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                        strokeWidth: 2,
+                      ),
+                    )
+                  : Text(
+                      controller.isLastPage ? "Complete" : "Next",
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
             ),
           ),
         ),

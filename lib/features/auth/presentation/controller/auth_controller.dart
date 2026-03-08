@@ -91,6 +91,10 @@ class AuthController extends GetxController {
           );
         }
         await CacheHelper.set(key: CacheConstants.isUserLoggedIn, value: true);
+        await CacheHelper.set(
+          key: CacheConstants.isProfileCompleted,
+          value: data.isCompleted ?? false,
+        );
 
         isLoading = false;
         update();
@@ -145,6 +149,10 @@ class AuthController extends GetxController {
       onSuccess: (data) async {
         // Mark user as logged in so AuthMiddleware allows profile setup
         await CacheHelper.set(key: CacheConstants.isUserLoggedIn, value: true);
+        await CacheHelper.set(
+          key: CacheConstants.isProfileCompleted,
+          value: false,
+        );
 
         isLoading = false;
         update();
@@ -177,8 +185,14 @@ class AuthController extends GetxController {
   }
 
   Future<void> logout() async {
-    // await authRepo.logout();
-    CacheHelper.clearAllData();
+    _clearCache();
     Get.offAllNamed(Routes.login);
+  }
+
+  void _clearCache() {
+    CacheHelper.delete(key: CacheConstants.accessToken);
+    CacheHelper.delete(key: CacheConstants.isUserLoggedIn);
+    CacheHelper.delete(key: CacheConstants.isProfileCompleted);
+    CacheHelper.delete(key: CacheConstants.userData);
   }
 }
