@@ -3,12 +3,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../../../core/extension/spacer.dart';
-import '../../../../core/routing/routes.dart';
 import '../../../../core/styles/app_styles.dart';
 import '../../../../core/theme/color_manager.dart';
 import '../../../../core/utils/app_validator.dart';
 import '../../../../core/widgets/app_text_form_field.dart';
-import '../../data/models/register_request_model.dart';
 import '../controller/auth_controller.dart';
 
 class RegisterFormWidget extends GetView<AuthController> {
@@ -38,6 +36,75 @@ class RegisterFormWidget extends GetView<AuthController> {
             hintText: 'Phone Number',
             keyboardType: TextInputType.phone,
             validator: (value) => AppValidator.validatePhoneNumber(value),
+          ),
+          VerticalSpace(15),
+          AppTextFormField(
+            controller: controller.addressController,
+            hintText: 'Address',
+            validator: (value) => AppValidator.validateAddress(value),
+          ),
+          VerticalSpace(15),
+          GetBuilder<AuthController>(
+            builder: (controller) {
+              return DropdownButtonFormField<String>(
+                initialValue: controller.selectedGender,
+                items: controller.genders
+                    .map(
+                      (gender) => DropdownMenuItem(
+                        value: gender,
+                        child: Text(
+                          gender,
+                          style: AppStyles.font14w400.copyWith(
+                            color: ColorManager.black,
+                          ),
+                        ),
+                      ),
+                    )
+                    .toList(),
+                onChanged: controller.onChangeGender,
+                decoration: InputDecoration(
+                  hintText: 'Gender',
+                  hintStyle: AppStyles.font14w400.copyWith(
+                    color: ColorManager.grey,
+                  ),
+                  contentPadding: EdgeInsets.symmetric(
+                    horizontal: 20.w,
+                    vertical: 18.h,
+                  ),
+                  filled: true,
+                  fillColor: ColorManager.greyDE,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(16.r),
+                    borderSide: const BorderSide(
+                      color: ColorManager.greyEE,
+                      width: 1.3,
+                    ),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(16.r),
+                    borderSide: const BorderSide(
+                      color: ColorManager.greyEE,
+                      width: 1.3,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(16.r),
+                    borderSide: const BorderSide(
+                      color: ColorManager.primary,
+                      width: 1.3,
+                    ),
+                  ),
+                  errorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(16.r),
+                    borderSide: const BorderSide(color: Colors.red, width: 1.3),
+                  ),
+                  focusedErrorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(16.r),
+                    borderSide: const BorderSide(color: Colors.red, width: 1.3),
+                  ),
+                ),
+              );
+            },
           ),
           VerticalSpace(15),
           GetBuilder<AuthController>(
@@ -95,27 +162,7 @@ class RegisterFormWidget extends GetView<AuthController> {
                       : () async {
                           if (controller.registerFormKey.currentState!
                               .validate()) {
-                            final success = await controller.register(
-                              RegisterRequestModel(
-                                name: controller.nameController.text.trim(),
-                                email: controller.emailController.text.trim(),
-                                phoneNumber: controller.phoneController.text
-                                    .trim(),
-                                password: controller.passwordController.text
-                                    .trim(),
-                              ),
-                            );
-
-                            if (success) {
-                              Get.snackbar(
-                                'Registration',
-                                'Registration successful! Please log in.',
-                                backgroundColor: ColorManager.primary,
-                                colorText: Colors.white,
-                                snackPosition: SnackPosition.BOTTOM,
-                              );
-                              Get.offAllNamed(Routes.home);
-                            }
+                            await controller.onRegister();
                           }
                         },
                   style: ElevatedButton.styleFrom(

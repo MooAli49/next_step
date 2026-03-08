@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-import '../../core/routing/routes.dart';
-import '../../core/styles/app_styles.dart';
-import '../../core/theme/color_manager.dart';
-import 'presentation/widget/auth_logo_widget.dart';
-import 'presentation/widget/login_form_widget.dart';
+import '../../../../core/routing/routes.dart';
+import '../../../../core/styles/app_styles.dart';
+import '../../../../core/theme/color_manager.dart';
+import '../widget/auth_logo_widget.dart';
+import '../widget/login_form_widget.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -58,7 +58,7 @@ class LoginScreen extends StatelessWidget {
                         ),
                         TextButton(
                           onPressed: () {
-                            Get.toNamed(Routes.register);
+                            Get.offNamed(Routes.register);
                           },
                           child: Text(
                             'Register',

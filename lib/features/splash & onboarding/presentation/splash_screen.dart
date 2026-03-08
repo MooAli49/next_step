@@ -35,8 +35,10 @@ class _SplashScreenState extends State<SplashScreen>
           Get.offAllNamed(Routes.onboarding);
         } else if (!cacheService.isLoggedIn()) {
           Get.offAllNamed(Routes.login);
+        } else if (!cacheService.isProfileCompleted()) {
+          Get.offAllNamed(Routes.profileSetup);
         } else {
-          Get.offAllNamed(Routes.home);
+          Get.offAllNamed(Routes.layout);
         }
       }
     });

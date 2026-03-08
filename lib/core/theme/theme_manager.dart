@@ -3,11 +3,11 @@
 // //TODO : Implement persistence for theme mode using SharedPreferences or similar package.
 // class ThemeManager extends ChangeNotifier {
 //   static final ThemeManager _instance = ThemeManager._internal();
-  
+
 //   factory ThemeManager() {
 //     return _instance;
 //   }
-  
+
 //   ThemeManager._internal();
 
 //   ThemeMode _themeMode = ThemeMode.light;

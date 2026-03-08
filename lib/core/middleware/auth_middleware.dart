@@ -13,6 +13,12 @@ class AuthMiddleware extends GetMiddleware {
       return const RouteSettings(name: Routes.login);
     }
 
+    // Redirect to profile setup if profile is incomplete
+    // (skip if already navigating to profile-setup to avoid loop)
+    if (!cacheService.isProfileCompleted() && route != Routes.profileSetup) {
+      return const RouteSettings(name: Routes.profileSetup);
+    }
+
     return null;
   }
 }

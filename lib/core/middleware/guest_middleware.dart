@@ -10,7 +10,10 @@ class GuestMiddleware extends GetMiddleware {
     final cacheService = Get.find<CacheService>();
 
     if (cacheService.isLoggedIn()) {
-      return const RouteSettings(name: Routes.home);
+      if (!cacheService.isProfileCompleted()) {
+        return const RouteSettings(name: Routes.profileSetup);
+      }
+      return const RouteSettings(name: Routes.layout);
     }
 
     return null;
