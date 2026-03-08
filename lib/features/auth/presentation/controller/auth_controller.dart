@@ -1,9 +1,9 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../../core/constants/cache_constants.dart';
 import '../../../../core/routing/routes.dart';
+import '../../../../core/utils/cache_helper.dart';
 import '../../data/models/login_request_model.dart';
 import '../../data/models/register_request_model.dart';
 import '../../domain/repositories/auth_repo.dart';
@@ -17,8 +17,12 @@ class AuthController extends GetxController {
   late final TextEditingController nameController;
   late final TextEditingController emailController;
   late final TextEditingController phoneController;
+  late final TextEditingController addressController;
   late final TextEditingController passwordController;
   late final TextEditingController confirmPasswordController;
+
+  String? selectedGender;
+  final List<String> genders = ['MAN', 'WOMAN'];
 
   bool obscurePassword = true;
   bool obscureConfirmPassword = true;
@@ -40,11 +44,20 @@ class AuthController extends GetxController {
   }
 
   void _setupTextEditingControllers() {
-    nameController = TextEditingController();
-    emailController = TextEditingController();
-    phoneController = TextEditingController();
-    passwordController = TextEditingController();
-    confirmPasswordController = TextEditingController();
+    nameController = TextEditingController(text: 'John Doe');
+    emailController = TextEditingController(text: 'john.doe@example.com');
+    phoneController = TextEditingController(text: '+1234567890');
+    addressController = TextEditingController(text: '123 Main St');
+    passwordController = TextEditingController(text: '123456');
+    confirmPasswordController = TextEditingController(text: '123456');
+    selectedGender = genders.first;
+  }
+
+  void onChangeGender(String? value) {
+    if (value != null) {
+      selectedGender = value;
+      update();
+    }
   }
 
   void toggleObscurePassword() {
@@ -57,57 +70,115 @@ class AuthController extends GetxController {
     update();
   }
 
-  Future<bool> login(LoginRequestModel request) async {
+  Future<void> onLogin() async {
+    final request = LoginRequestModel(
+      email: emailController.text.trim(),
+      password: passwordController.text.trim(),
+    );
+
     isLoading = true;
     update();
-    try {
-      await authRepo.login(request);
-      log('AuthController.login: success');
-      isLoading = false;
-      update();
-      return true;
-    } catch (e) {
-      log('AuthController.login error: $e');
-      isLoading = false;
-      update();
-      Get.snackbar(
-        'Login Failed',
-        e.toString().replaceAll('Exception: ', ''),
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-        snackPosition: SnackPosition.BOTTOM,
-      );
-      return false;
-    }
+
+    final result = await authRepo.login(request);
+
+    return result.when(
+      onSuccess: (data) async {
+        // Save token and login state
+        if (data.token != null) {
+          await CacheHelper.setSecureData(
+            key: CacheConstants.accessToken,
+            value: data.token!,
+          );
+        }
+        await CacheHelper.set(key: CacheConstants.isUserLoggedIn, value: true);
+
+        isLoading = false;
+        update();
+
+        // Unfocus keyboard before routing to prevent focus node framework errors
+        FocusManager.instance.primaryFocus?.unfocus();
+
+        Get.snackbar(
+          'Login Successful',
+          'Welcome back, ${data.name ?? 'User'}! ${data.isCompleted ?? false ? '' : ' Please complete your profile setup.'}',
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+          snackPosition: SnackPosition.BOTTOM,
+        );
+        if (data.isCompleted == false) {
+          Get.offAllNamed(Routes.profileSetup);
+        } else {
+          Get.offAllNamed(Routes.layout);
+        }
+      },
+      onError: (error) {
+        isLoading = false;
+        update();
+        Get.snackbar(
+          'Login Failed',
+          error.message ?? 'Unknown error occurred',
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          snackPosition: SnackPosition.BOTTOM,
+        );
+      },
+    );
   }
 
-  Future<bool> register(RegisterRequestModel request) async {
+  Future<void> onRegister() async {
+    final request = RegisterRequestModel(
+      fullName: nameController.text.trim(),
+      email: emailController.text.trim(),
+      phoneNumber: phoneController.text.trim(),
+      password: passwordController.text.trim(),
+      address: addressController.text.trim(),
+      gender: selectedGender ?? 'MAN',
+      role: 'USER',
+    );
+
     isLoading = true;
     update();
-    try {
-      log('AuthController.register: request: ${request.toString()}');
-      await authRepo.register(request);
-      log('AuthController.register: success');
-      isLoading = false;
-      update();
-      return true;
-    } catch (e) {
-      log('AuthController.register error: $e');
-      isLoading = false;
-      update();
-      Get.snackbar(
-        'Registration Failed',
-        e.toString().replaceAll('Exception: ', ''),
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-        snackPosition: SnackPosition.BOTTOM,
-      );
-      return false;
-    }
+
+    final result = await authRepo.register(request);
+
+    return result.when(
+      onSuccess: (data) async {
+        // Mark user as logged in so AuthMiddleware allows profile setup
+        await CacheHelper.set(key: CacheConstants.isUserLoggedIn, value: true);
+
+        isLoading = false;
+        update();
+
+        // Unfocus keyboard before routing to prevent focus node framework errors
+        FocusManager.instance.primaryFocus?.unfocus();
+
+        Get.snackbar(
+          'Registration',
+          'Registration successful! Please Complete your profile setup.',
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+          snackPosition: SnackPosition.BOTTOM,
+        );
+
+        Get.offAllNamed(Routes.profileSetup);
+      },
+      onError: (error) {
+        isLoading = false;
+        update();
+        Get.snackbar(
+          'Registration Failed',
+          error.message ?? 'Unknown error occurred',
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          snackPosition: SnackPosition.BOTTOM,
+        );
+      },
+    );
   }
 
   Future<void> logout() async {
-    await authRepo.logout();
+    // await authRepo.logout();
+    CacheHelper.clearAllData();
     Get.offAllNamed(Routes.login);
   }
 }

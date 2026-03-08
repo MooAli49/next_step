@@ -125,7 +125,7 @@ class _SearchScreenState extends State<SearchScreen> {
           child: Container(
             padding: EdgeInsets.all(14.r),
             decoration: BoxDecoration(
-              color: ColorManager.primary.withOpacity(0.15),
+              color: ColorManager.primary.withValues(alpha: 0.15),
               borderRadius: BorderRadius.circular(12.r),
             ),
             child: Icon(Icons.tune, color: ColorManager.primary, size: 24.sp),

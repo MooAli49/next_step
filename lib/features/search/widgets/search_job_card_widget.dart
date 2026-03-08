@@ -124,7 +124,7 @@ class SearchJobCardWidget extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
       decoration: BoxDecoration(
-        color: ColorManager.primary.withOpacity(0.15),
+        color: ColorManager.primary.withValues(alpha: 0.15),
         borderRadius: BorderRadius.circular(8.r),
       ),
       child: Text(

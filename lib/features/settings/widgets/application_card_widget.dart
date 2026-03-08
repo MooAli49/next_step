@@ -117,7 +117,7 @@ class ApplicationCardWidget extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: () {},
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: ColorManager.red.withOpacity(0.1),
+                    backgroundColor: ColorManager.red.withValues(alpha: 0.1),
                     elevation: 0,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8.r),

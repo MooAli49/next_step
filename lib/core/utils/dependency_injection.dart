@@ -1,9 +1,9 @@
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 
+import '../../features/auth/data/datasources/auth_api_data_source.dart';
 import '../../features/auth/data/datasources/auth_remote_data_source.dart';
-import '../../features/auth/data/datasources/supabase_data_source.dart';
-import '../../features/auth/data/repositories/supabase_repository_impl.dart';
+import '../../features/auth/data/repositories/api_auth_repository.dart';
 import '../../features/auth/domain/repositories/auth_repo.dart';
 import '../../features/auth/presentation/controller/auth_controller.dart';
 import '../../features/profile_setup/controllers/complete_profile_controller.dart';
@@ -24,9 +24,9 @@ void setupOnboardingDI() {
 }
 
 void _setupAuthDI() {
-  Get.lazyPut<AuthRemoteDataSource>(() => SupabaseDataSource(), fenix: true);
+  Get.lazyPut<AuthRemoteDataSource>(() => AuthApiDataSource(), fenix: true);
   Get.lazyPut<AuthRepo>(
-    () => SupabaseRepositoryImpl(Get.find<AuthRemoteDataSource>()),
+    () => ApiAuthRepository(Get.find<AuthRemoteDataSource>()),
     fenix: true,
   );
   Get.lazyPut<AuthController>(

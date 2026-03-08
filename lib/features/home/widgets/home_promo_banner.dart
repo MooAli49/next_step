@@ -47,7 +47,7 @@ class HomePromoBanner extends StatelessWidget {
                 ElevatedButton(
                   onPressed: () {},
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: ColorManager.white.withOpacity(0.2),
+                    backgroundColor: ColorManager.white.withValues(alpha: 0.2),
                     elevation: 0,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8.r),

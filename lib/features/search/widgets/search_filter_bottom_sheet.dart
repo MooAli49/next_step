@@ -89,7 +89,9 @@ class SearchFilterBottomSheet extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: () => Navigator.pop(context),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: ColorManager.primary.withOpacity(0.15),
+                    backgroundColor: ColorManager.primary.withValues(
+                      alpha: 0.15,
+                    ),
                     elevation: 0,
                     minimumSize: Size(0, 50.h),
                     shape: RoundedRectangleBorder(

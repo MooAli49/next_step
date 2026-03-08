@@ -36,7 +36,7 @@ class _SplashScreenState extends State<SplashScreen>
         } else if (!cacheService.isLoggedIn()) {
           Get.offAllNamed(Routes.login);
         } else {
-          Get.offAllNamed(Routes.profileSetup);
+          Get.offAllNamed(Routes.layout);
         }
       }
     });

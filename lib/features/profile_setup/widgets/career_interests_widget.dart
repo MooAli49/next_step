@@ -50,7 +50,7 @@ class CareerInterestsWidget extends GetView<CompleteProfileController> {
                       ),
                       decoration: BoxDecoration(
                         color: isSelected
-                            ? Colors.teal.withOpacity(0.1)
+                            ? Colors.teal.withValues(alpha: 0.1)
                             : Colors.grey[100],
                         borderRadius: BorderRadius.circular(8.r),
                         border: Border.all(

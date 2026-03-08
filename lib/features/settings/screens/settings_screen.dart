@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 
 import '../../../../core/routing/routes.dart';
 import '../../../../core/theme/color_manager.dart';
+import '../../auth/presentation/controller/auth_controller.dart';
 import '../widgets/menu_item_widget.dart';
 import '../widgets/profile_header_widget.dart';
 
@@ -49,9 +50,7 @@ class SettingsScreen extends StatelessWidget {
                   MenuItemWidget(
                     icon: Icons.logout,
                     title: 'Logout',
-                    onTap: () {
-                      // Handle logout
-                    },
+                    onTap: _logout,
                     isLogout: true,
                     iconColor: ColorManager.red,
                   ),
@@ -62,5 +61,10 @@ class SettingsScreen extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void _logout() async {
+    final authController = Get.find<AuthController>();
+    await authController.logout();
   }
 }

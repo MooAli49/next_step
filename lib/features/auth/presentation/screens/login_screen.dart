@@ -58,7 +58,7 @@ class LoginScreen extends StatelessWidget {
                         ),
                         TextButton(
                           onPressed: () {
-                            Get.toNamed(Routes.register);
+                            Get.offNamed(Routes.register);
                           },
                           child: Text(
                             'Register',

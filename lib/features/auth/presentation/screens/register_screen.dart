@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get_navigation/src/extension_navigation.dart';
-import 'package:get/utils.dart';
+import 'package:get/get.dart';
 
 import '../../../../core/extension/spacer.dart';
+import '../../../../core/routing/routes.dart';
 import '../../../../core/styles/app_styles.dart';
 import '../../../../core/theme/color_manager.dart';
 import '../widget/auth_logo_widget.dart';
@@ -48,7 +48,7 @@ class RegisterScreen extends StatelessWidget {
                         ),
                         TextButton(
                           onPressed: () {
-                            Get.back();
+                            Get.offNamed(Routes.login);
                           },
                           child: Text(
                             'Log In',
