@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/styles/app_styles.dart';
 import '../../../../core/theme/color_manager.dart';
+import '../../../core/constants/app_image.dart';
 import '../../search/widgets/search_job_card_widget.dart';
 import '../widgets/empty_favorites_widget.dart';
 
@@ -56,7 +57,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                     company: 'Google',
                     location: 'California',
                     price: '\$15/Mo',
-                    imagePath: 'assets/images/google.png',
+                    imagePath: AppImage.googleLogo,
                     isBookmarked: true,
                   ),
                   SearchJobCardWidget(
@@ -64,7 +65,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                     company: 'Facebook',
                     location: 'Chicago, IL',
                     price: '\$15/Mo',
-                    imagePath: 'assets/images/google.png',
+                    imagePath: AppImage.googleLogo,
                     isBookmarked: true,
                   ),
                   SearchJobCardWidget(
@@ -72,7 +73,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                     company: 'xing',
                     location: 'Boston, MA',
                     price: '\$15/Mo',
-                    imagePath: 'assets/images/google.png',
+                    imagePath: AppImage.googleLogo,
                     isBookmarked: true,
                   ),
                   SearchJobCardWidget(
@@ -80,7 +81,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                     company: 'mcdonalds',
                     location: 'Boston, MA',
                     price: '\$15/Mo',
-                    imagePath: 'assets/images/google.png',
+                    imagePath: AppImage.googleLogo,
                     isBookmarked: true,
                   ),
                 ],

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/theme/color_manager.dart';
+import '../../../core/constants/app_image.dart';
 import '../widgets/empty_search_widget.dart';
 import '../widgets/search_filter_bottom_sheet.dart';
 import '../widgets/search_job_card_widget.dart';
@@ -37,7 +38,7 @@ class _SearchScreenState extends State<SearchScreen> {
                             company: 'Google',
                             location: 'California',
                             price: '\$15/Mo',
-                            imagePath: 'assets/images/google.png',
+                            imagePath:AppImage.googleLogo,
                             isBookmarked: true,
                           ),
                           SearchJobCardWidget(
@@ -45,8 +46,7 @@ class _SearchScreenState extends State<SearchScreen> {
                             company: 'Facebook',
                             location: 'Chicago, IL',
                             price: '\$15/Mo',
-                            imagePath:
-                                'assets/images/google.png', // Assuming user applies right asset
+                            imagePath: AppImage.googleLogo,
                             isBookmarked: true,
                           ),
                           SearchJobCardWidget(
@@ -54,7 +54,7 @@ class _SearchScreenState extends State<SearchScreen> {
                             company: 'xing',
                             location: 'Boston, MA',
                             price: '\$15/Mo',
-                            imagePath: 'assets/images/google.png',
+                            imagePath: AppImage.googleLogo,
                             isBookmarked: true,
                           ),
                           SearchJobCardWidget(
@@ -62,7 +62,7 @@ class _SearchScreenState extends State<SearchScreen> {
                             company: 'mcdonalds',
                             location: 'Boston, MA',
                             price: '\$15/Mo',
-                            imagePath: 'assets/images/google.png',
+                            imagePath: AppImage.googleLogo,
                             isBookmarked: true,
                           ),
                         ],

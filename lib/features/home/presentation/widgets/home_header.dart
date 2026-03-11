@@ -2,11 +2,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../core/constants/cache_constants.dart';
-import '../../../../core/styles/app_styles.dart';
-import '../../../../core/theme/color_manager.dart';
-import '../../../../core/utils/cache_helper.dart';
-import '../../profile_setup/data/models/user_model.dart';
+import '../../../../../core/constants/cache_constants.dart';
+import '../../../../../core/styles/app_styles.dart';
+import '../../../../../core/theme/color_manager.dart';
+import '../../../../../core/utils/cache_helper.dart';
+import '../../../profile_setup/data/models/user_model.dart';
 
 class HomeHeader extends StatelessWidget {
   const HomeHeader({super.key});

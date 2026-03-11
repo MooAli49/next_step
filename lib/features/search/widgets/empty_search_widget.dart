@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:next_step/core/constants/app_image.dart';
 
 import '../../../../core/styles/app_styles.dart';
 import '../../../../core/theme/color_manager.dart';
@@ -15,7 +16,7 @@ class EmptySearchWidget extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset('assets/images/search_1.png', height: 150.h),
+            Image.asset(AppImage.search1, height: 150.h),
             SizedBox(height: 24.h),
             Text(
               'No Results Found',

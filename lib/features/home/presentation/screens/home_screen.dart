@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:next_step/core/extension/spacer.dart';
 
 import '../widgets/browse_category_section.dart';
 import '../widgets/find_your_job_section.dart';
@@ -22,17 +23,17 @@ class HomeScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const HomeHeader(),
-              SizedBox(height: 24.h),
+              const VerticalSpace(24),
               const HomeSearchBar(),
-              SizedBox(height: 24.h),
+              const VerticalSpace(24),
               const HomePromoBanner(),
-              SizedBox(height: 24.h),
+              const VerticalSpace(24),
               const FindYourJobSection(),
-              SizedBox(height: 24.h),
+              const VerticalSpace(24),
               const BrowseCategorySection(),
-              SizedBox(height: 24.h),
+              const VerticalSpace(24),
               const SuggestedJobSection(),
-              SizedBox(height: 24.h),
+              const VerticalSpace(24),
             ],
           ),
         ),

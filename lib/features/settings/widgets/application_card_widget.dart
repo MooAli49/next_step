@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:next_step/core/constants/app_image.dart';
 
 import '../../../../core/styles/app_styles.dart';
 import '../../../../core/theme/color_manager.dart';
@@ -30,7 +31,7 @@ class ApplicationCardWidget extends StatelessWidget {
                   shape: BoxShape.circle,
                   image: DecorationImage(
                     image: AssetImage(
-                      'assets/images/google.png',
+                      AppImage.googleLogo,
                     ), // placeholder image, can match design
                     fit: BoxFit.cover,
                   ),

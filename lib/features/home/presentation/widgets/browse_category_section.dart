@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../core/styles/app_styles.dart';
-import '../../../../core/theme/color_manager.dart';
+import '../../../../../core/styles/app_styles.dart';
+import '../../../../../core/theme/color_manager.dart';
+import '../../../../core/constants/app_image.dart';
+import '../../../../core/extension/spacer.dart';
 
 class BrowseCategorySection extends StatelessWidget {
   const BrowseCategorySection({super.key});
@@ -13,26 +15,14 @@ class BrowseCategorySection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text('Browse by category', style: AppStyles.font16w600),
-        SizedBox(height: 16.h),
+        VerticalSpace(16),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            _buildCategoryItem('Company', 'assets/images/company.png', true),
-            _buildCategoryItem(
-              'Part Time',
-              'assets/images/part_time_job.png',
-              false,
-            ),
-            _buildCategoryItem(
-              'Full Time',
-              'assets/images/full_time_job.png',
-              false,
-            ),
-            _buildCategoryItem(
-              'Freelancer',
-              'assets/images/freelancer.png',
-              false,
-            ),
+            _buildCategoryItem('Company', AppImage.imageCompany, true),
+            _buildCategoryItem('Part Time', AppImage.imagePartTimeJob, false),
+            _buildCategoryItem('Full Time', AppImage.imageFullTimeJob, false),
+            _buildCategoryItem('Freelancer', AppImage.imageFreelancer, false),
           ],
         ),
       ],
@@ -57,7 +47,7 @@ class BrowseCategorySection extends StatelessWidget {
             child: Image.asset(imagePath, height: 32.h, width: 32.w),
           ),
         ),
-        SizedBox(height: 8.h),
+        VerticalSpace(8),
         Text(
           title,
           style: TextStyle(

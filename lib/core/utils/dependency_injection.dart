@@ -6,6 +6,11 @@ import '../../features/auth/data/datasources/auth_remote_data_source.dart';
 import '../../features/auth/data/repositories/api_auth_repository.dart';
 import '../../features/auth/domain/repositories/auth_repo.dart';
 import '../../features/auth/presentation/controller/auth_controller.dart';
+import '../../features/home/data/datasource/api_home_data_source.dart';
+import '../../features/home/data/datasource/home_data_source.dart';
+import '../../features/home/data/repositories/home_repo_impl.dart';
+import '../../features/home/domain/repositories/home_repos.dart';
+import '../../features/home/presentation/controllers/home_controller.dart';
 import '../../features/profile_setup/controllers/complete_profile_controller.dart';
 import '../../features/profile_setup/data/datasources/profile_api_data_source.dart';
 import '../../features/profile_setup/data/datasources/profile_data_source.dart';
@@ -17,10 +22,11 @@ void setupDependencyInjection() {
   setupOnboardingDI();
   _setupAuthDI();
   _setupProfileDI();
+  _setupHomeDI();
 }
 
 void _setupProfileDI() {
-  Get.lazyPut<ProfileDataSource>(() => ProfileApiDataSource());
+  Get.lazyPut<ProfileDataSource>(() => ProfileApiDataSource(),fenix: true);
   Get.lazyPut<ProfileRepo>(() => ApiProfileRepo(Get.find<ProfileDataSource>()));
   Get.lazyPut<CompleteProfileController>(
     () => CompleteProfileController(Get.find<ProfileRepo>()),
@@ -39,6 +45,18 @@ void _setupAuthDI() {
   );
   Get.lazyPut<AuthController>(
     () => AuthController(Get.find<AuthRepo>()),
+    fenix: true,
+  );
+}
+
+void _setupHomeDI() {
+  Get.lazyPut<HomeDataSource>(() => ApiHomeDataSource(), fenix: true);
+  Get.lazyPut<HomeRepos>(
+    () => HomeRepoImpl(Get.find<HomeDataSource>()),
+    fenix: true,
+  );
+  Get.lazyPut<HomeController>(
+    () => HomeController(Get.find<HomeRepos>()),
     fenix: true,
   );
 }

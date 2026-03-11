@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:next_step/core/constants/app_image.dart';
 
 import '../../../../core/styles/app_styles.dart';
 import '../../../../core/theme/color_manager.dart';
@@ -26,7 +27,7 @@ class ProfileHeaderWidget extends StatelessWidget {
                   shape: BoxShape.rectangle,
                   borderRadius: BorderRadius.circular(16.r),
                   image: const DecorationImage(
-                    image: AssetImage('assets/images/user_avatar.png'),
+                    image: AssetImage(AppImage.userAvatar),
                     fit: BoxFit.cover,
                   ),
                 ),
