@@ -17,7 +17,7 @@ class ApiConstant {
   static const String getUserJobsEp = '/api/v2/job/me';
   static const String listJobsEp = '/api/v2/job/all';
   static String getJobBySlugEp(String slug) => '/api/v2/job/detail/$slug';
-  static String getJobByIdEp(String id) => '/api/v2/job/$id';
+  static String getJobDetailsEp(String id) => '/api/v2/job/$id';
 
   // Applications
   static const String createApplicationEp = '/api/v2/application/create';

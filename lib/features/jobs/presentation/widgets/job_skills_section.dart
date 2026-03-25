@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:next_step/features/jobs/data/models/job_model.dart';
 
-import '../../../../core/styles/app_styles.dart';
-import '../../../../core/theme/color_manager.dart';
+import '../../../../../core/styles/app_styles.dart';
+import '../../../../../core/theme/color_manager.dart';
 
 class JobSkillsSection extends StatelessWidget {
-  const JobSkillsSection({super.key});
+  const JobSkillsSection({super.key, required this.job});
+  final JobModel job;
 
   @override
   Widget build(BuildContext context) {
@@ -18,12 +20,8 @@ class JobSkillsSection extends StatelessWidget {
           spacing: 8.w,
           runSpacing: 8.h,
           children: [
-            _buildSkillChip('User Research'),
-            _buildSkillChip('Usability Testing'),
-            _buildSkillChip('Data Analysis'),
-            _buildSkillChip('Interview Techniques'),
-            _buildSkillChip('Persona Development'),
-            _buildSkillChip('Journey Mapping'),
+            if (job.skills != null)
+              ...job.skills!.map((skill) => _buildSkillChip(skill)),
           ],
         ),
       ],

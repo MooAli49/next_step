@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:next_step/features/jobs/data/models/job_model.dart';
 
-import '../../../../core/styles/app_styles.dart';
-import '../../../../core/theme/color_manager.dart';
-import '../../../core/constants/app_image.dart';
+import '../../../../../core/styles/app_styles.dart';
+import '../../../../../core/theme/color_manager.dart';
 
 class JobDetailHeader extends StatelessWidget {
-  const JobDetailHeader({super.key});
+  const JobDetailHeader({super.key, required this.job});
+  final JobModel job;
 
   @override
   Widget build(BuildContext context) {
@@ -48,19 +49,31 @@ class JobDetailHeader extends StatelessWidget {
                 color: ColorManager.greyF3,
                 borderRadius: BorderRadius.circular(16.r),
               ),
-              child: Image.asset(AppImage.googleLogo),
+              child: Image.network(
+                job.postedBy?.imageUrl ?? '',
+                fit: BoxFit.cover,
+              ),
             ),
             SizedBox(width: 16.w),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Ui Designer', style: AppStyles.font20w700),
-                SizedBox(height: 4.h),
-                Text(
-                  'Google',
-                  style: TextStyle(color: ColorManager.grey, fontSize: 14.sp),
-                ),
-              ],
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    job.title ?? '',
+                    style: AppStyles.font20w700,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  SizedBox(height: 4.h),
+                  Text(
+                    job.postedBy?.fullName ?? '',
+                    style: TextStyle(color: ColorManager.grey, fontSize: 14.sp),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
             ),
           ],
         ),
@@ -73,12 +86,16 @@ class JobDetailHeader extends StatelessWidget {
               size: 20.sp,
             ),
             SizedBox(width: 8.w),
-            Text(
-              'California',
-              style: TextStyle(
-                color: ColorManager.black,
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w600,
+            Expanded(
+              child: Text(
+                job.location ?? '',
+                style: TextStyle(
+                  color: ColorManager.black,
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w600,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
           ],
@@ -92,12 +109,16 @@ class JobDetailHeader extends StatelessWidget {
               size: 20.sp,
             ),
             SizedBox(width: 8.w),
-            Text(
-              '\$ 14,000',
-              style: TextStyle(
-                color: ColorManager.black,
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w600,
+            Expanded(
+              child: Text(
+                '${job.salaryRange}',
+                style: TextStyle(
+                  color: ColorManager.black,
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w600,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
           ],

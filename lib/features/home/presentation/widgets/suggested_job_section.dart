@@ -30,7 +30,10 @@ class SuggestedJobSection extends GetView<HomeController> {
               return Padding(
                 padding: EdgeInsets.only(bottom: 12.h),
                 child: GestureDetector(
-                  onTap: () => Get.toNamed(Routes.jobDetails),
+                  onTap: () => Get.toNamed(
+                    Routes.jobDetails,
+                    parameters: {'jobId': job.id ?? ''},
+                  ),
                   child: Container(
                     padding: EdgeInsets.all(16.r),
                     decoration: BoxDecoration(

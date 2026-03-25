@@ -2,7 +2,7 @@ import 'package:get/get_navigation/src/routes/get_route.dart';
 
 import '../../features/auth/presentation/screens/login_screen.dart';
 import '../../features/auth/presentation/screens/register_screen.dart';
-import '../../features/jobs/screens/job_detail_screen.dart';
+import '../../features/jobs/presentation/screens/job_detail_screen.dart';
 import '../../features/layout/layout_screen.dart';
 import '../../features/profile_setup/complete_profile_screen.dart';
 import '../../features/settings/screens/my_applications_screen.dart';

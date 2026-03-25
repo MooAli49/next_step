@@ -11,6 +11,11 @@ import '../../features/home/data/datasource/home_data_source.dart';
 import '../../features/home/data/repositories/home_repo_impl.dart';
 import '../../features/home/domain/repositories/home_repos.dart';
 import '../../features/home/presentation/controllers/home_controller.dart';
+import '../../features/jobs/data/datasources/api_jobs_data_source.dart';
+import '../../features/jobs/data/datasources/jobs_data_source.dart';
+import '../../features/jobs/data/repositories/jobs_repository_impl.dart';
+import '../../features/jobs/domain/repositories/jobs_repository.dart';
+import '../../features/jobs/presentation/controllers/job_controller.dart';
 import '../../features/profile_setup/controllers/complete_profile_controller.dart';
 import '../../features/profile_setup/data/datasources/profile_api_data_source.dart';
 import '../../features/profile_setup/data/datasources/profile_data_source.dart';
@@ -29,6 +34,7 @@ void setupDependencyInjection() {
   _setupProfileDI();
   _setupHomeDI();
   _setupSettingsDI();
+  _setupJobsDI();
 }
 
 void _setupProfileDI() {
@@ -75,6 +81,18 @@ void _setupSettingsDI() {
   );
   Get.lazyPut<UpdateProfileController>(
     () => UpdateProfileController(Get.find<SettingsRepo>()),
+    fenix: true,
+  );
+}
+
+void _setupJobsDI() {
+  Get.lazyPut<JobsDataSource>(() => ApiJobsDataSource(), fenix: true);
+  Get.lazyPut<JobsRepository>(
+    () => JobsRepositoryImpl(Get.find<JobsDataSource>()),
+    fenix: true,
+  );
+  Get.lazyPut<JobController>(
+    () => JobController(Get.find<JobsRepository>()),
     fenix: true,
   );
 }

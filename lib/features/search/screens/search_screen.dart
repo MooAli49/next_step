@@ -38,7 +38,7 @@ class _SearchScreenState extends State<SearchScreen> {
                             company: 'Google',
                             location: 'California',
                             price: '\$15/Mo',
-                            imagePath:AppImage.googleLogo,
+                            imagePath: AppImage.googleLogo,
                             isBookmarked: true,
                           ),
                           SearchJobCardWidget(

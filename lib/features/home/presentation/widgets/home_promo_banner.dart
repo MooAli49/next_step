@@ -23,7 +23,7 @@ class HomePromoBanner extends StatelessWidget {
             right: 0,
             bottom: 0,
             child: Image.asset(
-             AppImage.promoBannerIllustration,
+              AppImage.promoBannerIllustration,
               height: 160.h,
               fit: BoxFit.cover,
             ),
