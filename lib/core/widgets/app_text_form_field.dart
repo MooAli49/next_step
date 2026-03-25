@@ -17,9 +17,13 @@ class AppTextFormField extends StatelessWidget {
   final TextStyle? inputTextStyle;
   final TextStyle? hintStyle;
   final Color? backgroundColor;
+  final int maxLines;
+  final bool readOnly;
 
   const AppTextFormField({
     super.key,
+    this.maxLines = 1,
+    this.readOnly = false,
     this.controller,
     required this.hintText,
     this.isObscureText = false,
@@ -41,6 +45,8 @@ class AppTextFormField extends StatelessWidget {
       obscureText: isObscureText,
       validator: validator,
       keyboardType: keyboardType,
+      maxLines: maxLines,
+      readOnly: readOnly,
       onTapOutside: (event) => FocusScope.of(context).unfocus(),
       style:
           inputTextStyle ?? AppStyles.font13w500.copyWith(color: Colors.black),

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:next_step/core/constants/app_image.dart';
-import 'package:next_step/core/extension/spacer.dart';
 
 import '../../../../../core/styles/app_styles.dart';
 import '../../../../../core/theme/color_manager.dart';
+import '../../../../core/constants/app_image.dart';
+import '../../../../core/extension/spacer.dart';
 import '../controllers/home_controller.dart';
 
 class FindYourJobSection extends StatelessWidget {
@@ -49,7 +49,7 @@ class FindYourJobSection extends StatelessWidget {
                         Image.asset(AppImage.imageRemoteJob, height: 60.h),
                         VerticalSpace(16),
                         Text(
-                          '${controller.remoteJobCount}',
+                          '${controller.remoteJobCount.value}',
                           style: AppStyles.font20w700,
                         ),
                         VerticalSpace(8),
@@ -69,13 +69,13 @@ class FindYourJobSection extends StatelessWidget {
                   child: Column(
                     children: [
                       _buildSmallCard(
-                        '${controller.partTimeJobCount}',
+                        '${controller.partTimeJobCount.value}',
                         'Part Time',
                         AppImage.imagePartTimeJob,
                       ),
                       VerticalSpace(16),
                       _buildSmallCard(
-                        '${controller.fullTimeJobCount}',
+                        '${controller.fullTimeJobCount.value}',
                         'Full Time',
                         AppImage.imageFullTimeJob,
                       ),

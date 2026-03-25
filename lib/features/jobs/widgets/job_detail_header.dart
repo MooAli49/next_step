@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:next_step/core/constants/app_image.dart';
 
 import '../../../../core/styles/app_styles.dart';
 import '../../../../core/theme/color_manager.dart';
+import '../../../core/constants/app_image.dart';
 
 class JobDetailHeader extends StatelessWidget {
   const JobDetailHeader({super.key});

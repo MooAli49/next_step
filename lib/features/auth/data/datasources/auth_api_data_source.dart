@@ -6,6 +6,7 @@ import '../../../../core/networking/api_constant.dart';
 import '../../../../core/networking/api_response_model.dart';
 import '../../../../core/networking/api_result.dart';
 import '../../../../core/networking/dio_factory.dart';
+import '../../../profile_setup/data/models/user_model.dart';
 import '../models/login_request_model.dart';
 import '../models/login_response_model.dart';
 import '../models/register_request_model.dart';
@@ -94,6 +95,44 @@ class AuthApiDataSource extends AuthRemoteDataSource {
       );
 
       log('AuthRemoteDataSource.register: exception occurred: $apiResponse');
+      return ApiResult.error(apiResponse);
+    }
+  }
+
+  @override
+  Future<ApiResult<UserModel>> getAuthenticatedUser() async {
+    try {
+      final response = await dio.get(ApiConstant.getAuthauthenticatedUserEp);
+
+      final apiResponse = ApiResponseModel<UserModel>.fromJson(
+        response.data,
+        (json) => UserModel.fromJson(json),
+      );
+
+      log(
+        'AuthRemoteDataSource.getAuthenticatedUser: response: ${apiResponse.message}',
+      );
+
+      if (apiResponse.data == null) {
+        return ApiResult.error(
+          ApiResponseModel(
+            success: false,
+            message: 'Get authenticated user failed: response data is null',
+            statusCode: apiResponse.statusCode,
+          ),
+        );
+      }
+
+      return ApiResult.success(apiResponse.data!);
+    } on Exception catch (e) {
+      final apiResponse = ApiResponseModel.fromJson(
+        e is DioException && e.response != null ? e.response!.data : null,
+        (json) => UserModel.fromJson(json),
+      );
+
+      log(
+        'AuthRemoteDataSource.getAuthenticatedUser: exception occurred: $apiResponse',
+      );
       return ApiResult.error(apiResponse);
     }
   }

@@ -1,12 +1,12 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
-import 'package:next_step/core/networking/api_constant.dart';
-import 'package:next_step/core/networking/api_response_model.dart';
-import 'package:next_step/core/networking/api_result.dart';
-import 'package:next_step/core/networking/dio_factory.dart';
-import 'package:next_step/features/home/data/models/home_stats_model/home_stats_model.dart';
 
+import '../../../../core/networking/api_constant.dart';
+import '../../../../core/networking/api_response_model.dart';
+import '../../../../core/networking/api_result.dart';
+import '../../../../core/networking/dio_factory.dart';
+import '../models/home_stats_model/home_stats_model.dart';
 import 'home_data_source.dart';
 
 class ApiHomeDataSource extends HomeDataSource {
@@ -17,8 +17,14 @@ class ApiHomeDataSource extends HomeDataSource {
     try {
       final reponse = await _dio.get(ApiConstant.getPlatformStatsEp);
 
+      if (reponse.data is! Map<String, dynamic>) {
+        return ApiResult.error(
+          ApiResponseModel(success: false, message: 'Invalid response format'),
+        );
+      }
+
       final apiResponse = ApiResponseModel<HomeStatsModel>.fromJson(
-        reponse.data,
+        reponse.data as Map<String, dynamic>,
         (data) => HomeStatsModel.fromJson(data),
       );
 
@@ -37,8 +43,17 @@ class ApiHomeDataSource extends HomeDataSource {
       return ApiResult.success(apiResponse.data!);
     } on Exception catch (e) {
       log('ApiHomeDataSource.getjobsStats: error: $e');
+      final responseData =
+          e is DioException && e.response?.data is Map<String, dynamic>
+          ? e.response!.data as Map<String, dynamic>
+          : null;
+      if (responseData == null) {
+        return ApiResult.error(
+          ApiResponseModel(success: false, message: e.toString()),
+        );
+      }
       final apiResponse = ApiResponseModel.fromJson(
-        e is DioException && e.response != null ? e.response!.data : null,
+        responseData,
         (data) => HomeStatsModel.fromJson(data),
       );
       return ApiResult.error(apiResponse);

@@ -1,10 +1,10 @@
 import 'dart:developer';
 
 import 'package:get/get.dart';
-import 'package:next_step/core/theme/color_manager.dart';
-import 'package:next_step/features/home/domain/repositories/home_repos.dart';
 
+import '../../../../core/theme/color_manager.dart';
 import '../../data/models/home_stats_model/suggested_job.dart';
+import '../../domain/repositories/home_repos.dart';
 
 class HomeController extends GetxController {
   final HomeRepos homeRepos;
@@ -14,16 +14,16 @@ class HomeController extends GetxController {
   bool get isLoading => _isLoading.value;
 
   bool get hasError =>
-      remoteJobCount == null ||
-      partTimeJobCount == null ||
-      fullTimeJobCount == null;
+      remoteJobCount.value == null ||
+      partTimeJobCount.value == null ||
+      fullTimeJobCount.value == null;
 
-  List<SuggestedJob>? _suggestedJobs;
-  List<SuggestedJob>? get suggestedJobs => _suggestedJobs;
+  final Rxn<List<SuggestedJob>> _suggestedJobs = Rxn<List<SuggestedJob>>();
+  List<SuggestedJob>? get suggestedJobs => _suggestedJobs.value;
 
-  int? remoteJobCount = 0;
-  int? partTimeJobCount = 0;
-  int? fullTimeJobCount = 0;
+  final remoteJobCount = Rxn<int>(0);
+  final partTimeJobCount = Rxn<int>(0);
+  final fullTimeJobCount = Rxn<int>(0);
 
   @override
   void onInit() {
@@ -40,12 +40,12 @@ class HomeController extends GetxController {
       onSuccess: (data) {
         _isLoading.value = false;
 
-        remoteJobCount = data.totalJobs?.freelance;
-        partTimeJobCount = data.totalJobs?.partTime;
-        fullTimeJobCount = data.totalJobs?.fullTime;
+        remoteJobCount.value = data.totalJobs?.freelance;
+        partTimeJobCount.value = data.totalJobs?.partTime;
+        fullTimeJobCount.value = data.totalJobs?.fullTime;
 
-        _suggestedJobs = data.suggestedJobs;
-        log('Suggested Jobs: ${_suggestedJobs?.length ?? 0}');
+        _suggestedJobs.value = data.suggestedJobs;
+        log('Suggested Jobs: ${_suggestedJobs.value?.length ?? 0}');
       },
       onError: (error) {
         _isLoading.value = false;

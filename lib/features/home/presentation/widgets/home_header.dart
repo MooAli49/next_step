@@ -52,7 +52,7 @@ class HomeHeader extends StatelessWidget {
                 ),
                 SizedBox(height: 4.h),
                 Text(
-                  '${user?.fullName ?? 'User'} 👋',
+                  '${user?.fullName ?? 'Guest'} 👋',
                   style: AppStyles.font20w700.copyWith(
                     color: ColorManager.black,
                   ),
