@@ -31,10 +31,15 @@ class JobDetailHeader extends StatelessWidget {
               'Details',
               style: AppStyles.font20w700.copyWith(fontSize: 18.sp),
             ),
-            Icon(
-              Icons.bookmark_border,
-              color: ColorManager.primary,
-              size: 24.sp,
+            IconButton(
+              icon: Icon(
+                Icons.bookmark_border,
+                color: ColorManager.primary,
+                size: 24.sp,
+              ),
+              onPressed: () {},
+              padding: EdgeInsets.zero,
+              constraints: const BoxConstraints(),
             ),
           ],
         ),

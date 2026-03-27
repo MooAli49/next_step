@@ -2,26 +2,17 @@ import '../../../../core/networking/api_result.dart';
 import '../../../jobs/data/models/job_model.dart';
 
 abstract class JobsRepository {
-  /// Fetch all available jobs
-  Future<ApiResult<List<JobModel>>> getAllJobs();
-
-  /// Get details of a specific job by ID
   Future<ApiResult<JobModel>> getJobDetails(String jobId);
 
-  /// Search jobs with filters
-  Future<ApiResult<List<JobModel>>> searchJobs(
-    JobModel searchRequest,
-  );
+  Future<ApiResult<void>> applyToJob(String jobId);
 
-  /// Add a job to favorites
+  Future<ApiResult<List<JobModel>>> getAllJobs();
+
   Future<ApiResult<void>> addFavoriteJob(String jobId);
 
-  /// Remove a job from favorites
   Future<ApiResult<void>> removeFavoriteJob(String jobId);
 
-  /// Get user's favorite jobs
-  Future<ApiResult<List<JobModel>>> getFavoriteJobs();
+  Future<ApiResult<void>> deleteAllFavorites();
 
-  /// Apply to a job
-  Future<ApiResult<void>> applyToJob(String jobId);
+  Future<ApiResult<List<JobModel>>> getFavoriteJobs();
 }

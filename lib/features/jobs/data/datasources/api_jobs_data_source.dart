@@ -13,44 +13,6 @@ class ApiJobsDataSource extends JobsDataSource {
   final Dio _dio = DioFactory().dio;
 
   @override
-  Future<ApiResult<List<JobModel>>> getAllJobs() async {
-    try {
-      final response = await _dio.get(ApiConstant.listJobsEp);
-
-      final apiResponse = ApiResponseModel<List<JobModel>>.fromJson(
-        response.data,
-        (json) => (json as List<dynamic>)
-            .map((e) => JobModel.fromJson(e as Map<String, dynamic>))
-            .toList(),
-      );
-
-      log('ApiJobsDataSource.getAllJobs: response: ${apiResponse.message}');
-
-      if (apiResponse.data == null) {
-        return ApiResult.error(
-          ApiResponseModel(
-            success: false,
-            message: 'Get all jobs failed: response data is null',
-            statusCode: apiResponse.statusCode,
-          ),
-        );
-      }
-
-      return ApiResult.success(apiResponse.data!);
-    } on Exception catch (e) {
-      final apiResponse = ApiResponseModel.fromJson(
-        e is DioException && e.response != null ? e.response!.data : null,
-        (json) => (json as List<dynamic>)
-            .map((e) => JobModel.fromJson(e as Map<String, dynamic>))
-            .toList(),
-      );
-
-      log('ApiJobsDataSource.getAllJobs: exception occurred: $apiResponse');
-      return ApiResult.error(apiResponse);
-    }
-  }
-
-  @override
   Future<ApiResult<JobModel>> getJobDetails(String jobId) async {
     try {
       final response = await _dio.get(ApiConstant.getJobDetailsEp(jobId));
@@ -85,14 +47,30 @@ class ApiJobsDataSource extends JobsDataSource {
   }
 
   @override
-  Future<ApiResult<List<JobModel>>> searchJobs(
-    JobModel searchRequest,
-  ) async {
+  Future<ApiResult<void>> applyToJob(String jobId) async {
     try {
-      final response = await _dio.post(
-        ApiConstant.addFavoriteJobEp, //TODO fix endpoint
-        data: searchRequest.toJson(),
+      await _dio.post(
+        ApiConstant.getJobApplicationsEp(jobId),
+        data: {'jobId': jobId},
       );
+
+      log('ApiJobsDataSource.applyToJob: success for jobId: $jobId');
+      return ApiResult.success(null);
+    } on Exception catch (e) {
+      final apiResponse = ApiResponseModel.fromJson(
+        e is DioException && e.response != null ? e.response!.data : null,
+        (json) => null,
+      );
+
+      log('ApiJobsDataSource.applyToJob: exception occurred: $apiResponse');
+      return ApiResult.error(apiResponse);
+    }
+  }
+
+  @override
+  Future<ApiResult<List<JobModel>>> getAllJobs() async {
+    try {
+      final response = await _dio.get(ApiConstant.listJobsEp);
 
       final apiResponse = ApiResponseModel<List<JobModel>>.fromJson(
         response.data,
@@ -101,13 +79,13 @@ class ApiJobsDataSource extends JobsDataSource {
             .toList(),
       );
 
-      log('ApiJobsDataSource.searchJobs: response: ${apiResponse.message}');
+      log('ApiJobsDataSource.getAllJobs: response: ${apiResponse.message}');
 
       if (apiResponse.data == null) {
         return ApiResult.error(
           ApiResponseModel(
             success: false,
-            message: 'Search jobs failed: response data is null',
+            message: 'Get all jobs failed: response data is null',
             statusCode: apiResponse.statusCode,
           ),
         );
@@ -117,12 +95,10 @@ class ApiJobsDataSource extends JobsDataSource {
     } on Exception catch (e) {
       final apiResponse = ApiResponseModel.fromJson(
         e is DioException && e.response != null ? e.response!.data : null,
-        (json) => (json as List<dynamic>)
-            .map((e) => JobModel.fromJson(e as Map<String, dynamic>))
-            .toList(),
+        (json) => <JobModel>[],
       );
 
-      log('ApiJobsDataSource.searchJobs: exception occurred: $apiResponse');
+      log('ApiJobsDataSource.getAllJobs: exception occurred: $apiResponse');
       return ApiResult.error(apiResponse);
     }
   }
@@ -166,6 +142,26 @@ class ApiJobsDataSource extends JobsDataSource {
   }
 
   @override
+  Future<ApiResult<void>> deleteAllFavorites() async {
+    try {
+      await _dio.delete(ApiConstant.batchDeleteUserFavoritesEp);
+
+      log('ApiJobsDataSource.deleteAllFavorites: success');
+      return ApiResult.success(null);
+    } on Exception catch (e) {
+      final apiResponse = ApiResponseModel.fromJson(
+        e is DioException && e.response != null ? e.response!.data : null,
+        (json) => null,
+      );
+
+      log(
+        'ApiJobsDataSource.deleteAllFavorites: exception occurred: $apiResponse',
+      );
+      return ApiResult.error(apiResponse);
+    }
+  }
+
+  @override
   Future<ApiResult<List<JobModel>>> getFavoriteJobs() async {
     try {
       final response = await _dio.get(ApiConstant.listUserFavoritesEp);
@@ -195,35 +191,12 @@ class ApiJobsDataSource extends JobsDataSource {
     } on Exception catch (e) {
       final apiResponse = ApiResponseModel.fromJson(
         e is DioException && e.response != null ? e.response!.data : null,
-        (json) => (json as List<dynamic>)
-            .map((e) => JobModel.fromJson(e as Map<String, dynamic>))
-            .toList(),
+        (json) => <JobModel>[],
       );
 
       log(
         'ApiJobsDataSource.getFavoriteJobs: exception occurred: $apiResponse',
       );
-      return ApiResult.error(apiResponse);
-    }
-  }
-
-  @override
-  Future<ApiResult<void>> applyToJob(String jobId) async {
-    try {
-      await _dio.post(
-        ApiConstant.getJobApplicationsEp(jobId),
-        data: {'jobId': jobId},
-      );
-
-      log('ApiJobsDataSource.applyToJob: success for jobId: $jobId');
-      return ApiResult.success(null);
-    } on Exception catch (e) {
-      final apiResponse = ApiResponseModel.fromJson(
-        e is DioException && e.response != null ? e.response!.data : null,
-        (json) => null,
-      );
-
-      log('ApiJobsDataSource.applyToJob: exception occurred: $apiResponse');
       return ApiResult.error(apiResponse);
     }
   }

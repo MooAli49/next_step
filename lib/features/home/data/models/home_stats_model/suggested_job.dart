@@ -9,6 +9,7 @@ class SuggestedJob {
   String? jobLevel;
   String? salaryRange;
   DateTime? createdAt;
+  bool? isFavorite;
 
   SuggestedJob({
     this.id,
@@ -19,6 +20,7 @@ class SuggestedJob {
     this.jobLevel,
     this.salaryRange,
     this.createdAt,
+    this.isFavorite,
   });
 
   factory SuggestedJob.fromJson(Map<String, dynamic> json) => SuggestedJob(
@@ -34,6 +36,8 @@ class SuggestedJob {
     createdAt: json['createdAt'] == null
         ? null
         : DateTime.parse(json['createdAt'] as String),
+    isFavorite:
+        null, // API doesn't provide this, use JobController to check favorites
   );
 
   Map<String, dynamic> toJson() => {
@@ -45,5 +49,6 @@ class SuggestedJob {
     'jobLevel': jobLevel,
     'salaryRange': salaryRange,
     'createdAt': createdAt?.toIso8601String(),
+    'isFavorite': isFavorite,
   };
 }

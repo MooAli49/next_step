@@ -1,24 +1,24 @@
 class JobModel {
-  final String? id;
-  final String? title;
-  final String? description;
-  final String? slug;
-  final String? location;
-  final String? experience;
-  final String? jobType;
-  final String? jobLevel;
-  final String? salaryRange;
-  final List<String>? skills;
-  final List<String>? responsibilities;
-  final List<String>? requirements;
-  final List<String>? benefits;
-  final String? postedById;
-  final int? categoryId;
-  final DateTime? createdAt;
-  final DateTime? updatedAt;
-  final PostedBy? postedBy;
-  final JobCategory? category;
-  final bool? isFavorite;
+  String? id;
+  String? title;
+  String? description;
+  String? slug;
+  String? location;
+  String? experience;
+  String? jobType;
+  String? jobLevel;
+  String? salaryRange;
+  List<String>? skills;
+  List<String>? responsibilities;
+  List<String>? requirements;
+  List<String>? benefits;
+  String? postedById;
+  int? categoryId;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  PostedBy? postedBy;
+  JobCategory? category;
+  bool? isFavorite;
 
   JobModel({
     this.id,
@@ -45,7 +45,7 @@ class JobModel {
 
   factory JobModel.fromJson(Map<String, dynamic> json) {
     return JobModel(
-      id: json['id'] as String?,
+      id: json['id']?.toString(),
       title: json['title'] as String?,
       slug: json['slug'] as String?,
       description: json['description'] as String?,

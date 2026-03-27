@@ -9,20 +9,18 @@ class JobsRepositoryImpl extends JobsRepository {
   JobsRepositoryImpl(this.jobsDataSource);
 
   @override
-  Future<ApiResult<List<JobModel>>> getAllJobs() async {
-    return await jobsDataSource.getAllJobs();
-  }
-
-  @override
   Future<ApiResult<JobModel>> getJobDetails(String jobId) async {
     return await jobsDataSource.getJobDetails(jobId);
   }
 
   @override
-  Future<ApiResult<List<JobModel>>> searchJobs(
-    JobModel searchRequest,
-  ) async {
-    return await jobsDataSource.searchJobs(searchRequest);
+  Future<ApiResult<void>> applyToJob(String jobId) async {
+    return await jobsDataSource.applyToJob(jobId);
+  }
+
+  @override
+  Future<ApiResult<List<JobModel>>> getAllJobs() async {
+    return await jobsDataSource.getAllJobs();
   }
 
   @override
@@ -36,12 +34,12 @@ class JobsRepositoryImpl extends JobsRepository {
   }
 
   @override
-  Future<ApiResult<List<JobModel>>> getFavoriteJobs() async {
-    return await jobsDataSource.getFavoriteJobs();
+  Future<ApiResult<void>> deleteAllFavorites() async {
+    return await jobsDataSource.deleteAllFavorites();
   }
 
   @override
-  Future<ApiResult<void>> applyToJob(String jobId) async {
-    return await jobsDataSource.applyToJob(jobId);
+  Future<ApiResult<List<JobModel>>> getFavoriteJobs() async {
+    return await jobsDataSource.getFavoriteJobs();
   }
 }

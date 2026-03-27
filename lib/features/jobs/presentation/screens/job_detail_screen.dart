@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -14,44 +16,54 @@ class JobDetailScreen extends GetView<JobController> {
 
   @override
   Widget build(BuildContext context) {
+    // Get the jobId from route parameters when this screen is navigated to
+    final jobId = Get.parameters['jobId'];
+    log('JobDetailScreen.build() - jobId from route: $jobId');
+
+    // Load job details when jobId is present
+    if (jobId != null && jobId.isNotEmpty) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        controller.getJobDetails(jobId);
+      });
+    }
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
         child: GetBuilder<JobController>(
-          builder: (jobController) {
-            if (jobController.isLoading) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
+          builder: (controller) {
+            if (controller.isLoading) {
+              return const Center(child: CircularProgressIndicator());
             }
 
-            if (jobController.currentJob == null) {
-              return const Center(
-                child: Text('Job not found'),
-              );
+            if (controller.currentJob == null) {
+              return const Center(child: Text('Job not found'));
             }
 
             return Column(
               children: [
                 Expanded(
                   child: SingleChildScrollView(
-                    padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 20.w,
+                      vertical: 16.h,
+                    ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        JobDetailHeader(job: jobController.currentJob!),
+                        JobDetailHeader(job: controller.currentJob!),
                         SizedBox(height: 24.h),
-                        JobDetailInfoRow(job: jobController.currentJob!),
+                        JobDetailInfoRow(job: controller.currentJob!),
                         SizedBox(height: 24.h),
-                        JobSkillsSection(job: jobController.currentJob!),
+                        JobSkillsSection(job: controller.currentJob!),
                         SizedBox(height: 24.h),
-                        JobDescriptionSection(job: jobController.currentJob!),
+                        JobDescriptionSection(job: controller.currentJob!),
                         SizedBox(height: 24.h),
                       ],
                     ),
                   ),
                 ),
-                _buildBottomApplyButton(jobController),
+                _buildBottomApplyButton(),
               ],
             );
           },
@@ -60,7 +72,7 @@ class JobDetailScreen extends GetView<JobController> {
     );
   }
 
-  Widget _buildBottomApplyButton(JobController jobController) {
+  Widget _buildBottomApplyButton() {
     return Container(
       padding: EdgeInsets.all(20.w),
       decoration: BoxDecoration(
@@ -75,7 +87,7 @@ class JobDetailScreen extends GetView<JobController> {
       ),
       child: ElevatedButton(
         onPressed: () {
-            jobController.applyToJob();
+          controller.applyToJob();
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: ColorManager.primary,

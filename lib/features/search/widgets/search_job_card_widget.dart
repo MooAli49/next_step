@@ -1,33 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:next_step/features/jobs/data/models/job_model.dart';
 
 import '../../../../core/routing/routes.dart';
 import '../../../../core/styles/app_styles.dart';
 import '../../../../core/theme/color_manager.dart';
 
 class SearchJobCardWidget extends StatelessWidget {
-  final String title;
-  final String company;
-  final String location;
-  final String price;
-  final String imagePath;
-  final bool isBookmarked;
+  final JobModel job;
+  final VoidCallback? onBookmarkToggle;
 
   const SearchJobCardWidget({
     super.key,
-    required this.title,
-    required this.company,
-    required this.location,
-    required this.price,
-    required this.imagePath,
-    this.isBookmarked = false,
+    required this.job,
+    this.onBookmarkToggle,
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Get.toNamed(Routes.jobDetails),
+      onTap: () =>
+          Get.toNamed(Routes.jobDetails, parameters: {'jobId': job.id ?? ''}),
       child: Container(
         margin: EdgeInsets.only(bottom: 16.h),
         padding: EdgeInsets.all(16.r),
@@ -49,67 +43,94 @@ class SearchJobCardWidget extends StatelessWidget {
                     color: ColorManager.greyF3,
                     borderRadius: BorderRadius.circular(12.r),
                   ),
-                  child: Image.asset(imagePath),
+                  child: Image.network(job.postedBy?.imageUrl ?? ''),
                 ),
                 SizedBox(width: 12.w),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(title, style: AppStyles.font16w600),
+                      Text(
+                        job.title ?? '',
+                        style: AppStyles.font16w600,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                       SizedBox(height: 4.h),
                       Text(
-                        company,
+                        job.postedBy?.fullName ?? '',
                         style: TextStyle(
                           color: ColorManager.grey,
                           fontSize: 13.sp,
                         ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ],
                   ),
                 ),
-                Icon(
-                  isBookmarked ? Icons.bookmark : Icons.bookmark_border,
-                  color: ColorManager.primary,
-                  size: 24.sp,
+                GestureDetector(
+                  onTap: onBookmarkToggle,
+                  child: Icon(
+                    (job.isFavorite ?? false)
+                        ? Icons.bookmark
+                        : Icons.bookmark_border,
+                    color: ColorManager.primary,
+                    size: 24.sp,
+                  ),
                 ),
               ],
             ),
             SizedBox(height: 16.h),
-            Row(
-              children: [
-                _buildTag('Design'),
-                SizedBox(width: 8.w),
-                _buildTag('Full Time'),
-              ],
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  _buildTag(job.jobType ?? ''),
+                  SizedBox(width: 8.w),
+                  _buildTag(job.jobLevel ?? ''),
+                ],
+              ),
             ),
             SizedBox(height: 16.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  children: [
-                    Icon(
-                      Icons.near_me_outlined,
-                      color: ColorManager.black,
-                      size: 20.sp,
-                    ),
-                    SizedBox(width: 4.w),
-                    Text(
-                      location,
-                      style: TextStyle(
+                Expanded(
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.near_me_outlined,
                         color: ColorManager.black,
-                        fontSize: 14.sp,
+                        size: 20.sp,
                       ),
-                    ),
-                  ],
+                      SizedBox(width: 4.w),
+                      Expanded(
+                        child: Text(
+                          job.location ?? '',
+                          style: TextStyle(
+                            color: ColorManager.black,
+                            fontSize: 14.sp,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                Text(
-                  price,
-                  style: TextStyle(
-                    color: ColorManager.black,
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w700,
+                SizedBox(width: 12.w),
+                Expanded(
+                  child: Text(
+                    job.salaryRange ?? '',
+                    style: TextStyle(
+                      color: ColorManager.black,
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w700,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.end,
                   ),
                 ),
               ],
@@ -134,6 +155,8 @@ class SearchJobCardWidget extends StatelessWidget {
           fontSize: 12.sp,
           fontWeight: FontWeight.w500,
         ),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
       ),
     );
   }

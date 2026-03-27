@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 import '../../../../core/theme/color_manager.dart';
-import '../../../core/constants/app_image.dart';
+import '../../jobs/presentation/controllers/job_controller.dart';
 import '../widgets/empty_search_widget.dart';
 import '../widgets/search_filter_bottom_sheet.dart';
 import '../widgets/search_job_card_widget.dart';
@@ -15,67 +16,59 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  bool _isSearching = false; // Toggle to show empty state
+  @override
+  void initState() {
+    super.initState();
+    // Load all jobs when screen is shown
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final controller = Get.find<JobController>();
+      controller.getAllJobs();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.all(20.w),
-          child: Column(
-            children: [
-              _buildSearchBar(),
-              SizedBox(height: 24.h),
-              Expanded(
-                child: _isSearching
-                    ? const EmptySearchWidget()
-                    : ListView(
-                        children: const [
-                          SearchJobCardWidget(
-                            title: 'Ui Designer',
-                            company: 'Google',
-                            location: 'California',
-                            price: '\$15/Mo',
-                            imagePath: AppImage.googleLogo,
-                            isBookmarked: true,
+    return GetBuilder<JobController>(
+      builder: (controller) {
+        return Scaffold(
+          backgroundColor: Colors.white,
+          body: SafeArea(
+            child: Padding(
+              padding: EdgeInsets.all(20.w),
+              child: Column(
+                children: [
+                  _buildSearchBar(controller),
+                  SizedBox(height: 24.h),
+                  Expanded(
+                    child: controller.isLoading
+                        ? const Center(child: CircularProgressIndicator())
+                        : controller.jobs.isEmpty
+                        ? const EmptySearchWidget()
+                        : ListView.builder(
+                            itemCount: controller.jobs.length,
+                            itemBuilder: (context, index) {
+                              final job = controller.jobs[index];
+                              return SearchJobCardWidget(
+                                job: job,
+                                onBookmarkToggle: () {
+                                  if (job.id != null) {
+                                    controller.toggleFavorite(job.id!);
+                                  }
+                                },
+                              );
+                            },
                           ),
-                          SearchJobCardWidget(
-                            title: 'Human Resources Manager',
-                            company: 'Facebook',
-                            location: 'Chicago, IL',
-                            price: '\$15/Mo',
-                            imagePath: AppImage.googleLogo,
-                            isBookmarked: true,
-                          ),
-                          SearchJobCardWidget(
-                            title: 'Data Scientist',
-                            company: 'xing',
-                            location: 'Boston, MA',
-                            price: '\$15/Mo',
-                            imagePath: AppImage.googleLogo,
-                            isBookmarked: true,
-                          ),
-                          SearchJobCardWidget(
-                            title: 'Supply Chain Manager',
-                            company: 'mcdonalds',
-                            location: 'Boston, MA',
-                            price: '\$15/Mo',
-                            imagePath: AppImage.googleLogo,
-                            isBookmarked: true,
-                          ),
-                        ],
-                      ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 
-  Widget _buildSearchBar() {
+  Widget _buildSearchBar(JobController controller) {
     return Row(
       children: [
         Expanded(
@@ -86,6 +79,7 @@ class _SearchScreenState extends State<SearchScreen> {
               border: Border.all(color: ColorManager.greyEE),
             ),
             child: TextField(
+              onTapOutside: (event) => FocusScope.of(context).unfocus(),
               decoration: InputDecoration(
                 hintText: 'Search ...',
                 hintStyle: TextStyle(
@@ -104,10 +98,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 ),
               ),
               onChanged: (val) {
-                // Mocking search empty state based on input
-                setState(() {
-                  _isSearching = val.isNotEmpty && val.length > 5;
-                });
+                controller.searchLocalJobs(val);
               },
             ),
           ),
@@ -116,7 +107,7 @@ class _SearchScreenState extends State<SearchScreen> {
         GestureDetector(
           onTap: () {
             showModalBottomSheet(
-              context: context,
+              context: Get.context!,
               isScrollControlled: true,
               backgroundColor: Colors.transparent,
               builder: (context) => const SearchFilterBottomSheet(),
