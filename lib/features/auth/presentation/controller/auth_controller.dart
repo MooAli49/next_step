@@ -205,9 +205,11 @@ class AuthController extends GetxController {
   }
 
   Future<void> _clearCache() async {
-    await CacheHelper.delete(key: CacheConstants.accessToken);
-    await CacheHelper.delete(key: CacheConstants.isUserLoggedIn);
-    await CacheHelper.delete(key: CacheConstants.isProfileCompleted);
-    await CacheHelper.delete(key: CacheConstants.userData);
+    await Future.wait([
+      CacheHelper.delete(key: CacheConstants.accessToken),
+      CacheHelper.delete(key: CacheConstants.isUserLoggedIn),
+      CacheHelper.delete(key: CacheConstants.isProfileCompleted),
+      CacheHelper.delete(key: CacheConstants.userData),
+    ]);
   }
 }
