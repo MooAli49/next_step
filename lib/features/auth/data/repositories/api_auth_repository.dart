@@ -1,4 +1,5 @@
 import '../../../../core/networking/api_result.dart';
+import '../../../profile_setup/data/models/user_model.dart';
 import '../../domain/repositories/auth_repo.dart';
 import '../datasources/auth_remote_data_source.dart';
 import '../models/login_request_model.dart';
@@ -20,5 +21,10 @@ class ApiAuthRepository extends AuthRepo {
     RegisterRequestModel request,
   ) async {
     return await authRemoteDataSource.register(request);
+  }
+
+  @override
+  Future<ApiResult<UserModel>> getAuthenticatedUser() async {
+    return await authRemoteDataSource.getAuthenticatedUser();
   }
 }

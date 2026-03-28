@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '../../core/theme/color_manager.dart';
-import '../favorites/screens/favorites_screen.dart';
-import '../home/presentation/home_screen.dart';
-import '../search/screens/search_screen.dart';
-import '../settings/screens/settings_screen.dart';
+import '../favorites/presentation/screens/favorites_screen.dart';
+import '../home/presentation/screens/home_screen.dart';
+import '../search/presentation/screens/search_screen.dart';
+import '../settings/presentation/screens/settings_screen.dart';
 
 class LayoutScreen extends StatefulWidget {
   const LayoutScreen({super.key});

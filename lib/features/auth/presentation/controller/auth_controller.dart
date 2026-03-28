@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -96,6 +98,19 @@ class AuthController extends GetxController {
           value: data.isCompleted ?? false,
         );
 
+        final userProfileResult = await authRepo.getAuthenticatedUser();
+        userProfileResult.when(
+          onSuccess: (completeUser) async {
+            await CacheHelper.set(
+              key: CacheConstants.userData,
+              value: completeUser.toJson(),
+            );
+          },
+          onError: (error) {
+            log('Failed to fetch complete user profile: ${error.message}');
+          },
+        );
+
         isLoading = false;
         update();
 
@@ -185,14 +200,14 @@ class AuthController extends GetxController {
   }
 
   Future<void> logout() async {
-    _clearCache();
+    await _clearCache();
     Get.offAllNamed(Routes.login);
   }
 
-  void _clearCache() {
-    CacheHelper.delete(key: CacheConstants.accessToken);
-    CacheHelper.delete(key: CacheConstants.isUserLoggedIn);
-    CacheHelper.delete(key: CacheConstants.isProfileCompleted);
-    CacheHelper.delete(key: CacheConstants.userData);
+  Future<void> _clearCache() async {
+    await CacheHelper.delete(key: CacheConstants.accessToken);
+    await CacheHelper.delete(key: CacheConstants.isUserLoggedIn);
+    await CacheHelper.delete(key: CacheConstants.isProfileCompleted);
+    await CacheHelper.delete(key: CacheConstants.userData);
   }
 }

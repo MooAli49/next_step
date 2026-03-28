@@ -25,16 +25,16 @@ class UserModel {
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
-      id: json['id'] as String,
-      fullName: json['fullName'] as String,
-      email: json['email'] as String,
-      phoneNumber: json['phoneNumber'] as String,
-      address: json['address'] as String,
-      gender: json['gender'] as String,
-      jobRoles: List<String>.from(json['jobRoles'] as List<dynamic>),
-      role: json['role'] as String,
-      countries: List<String>.from(json['countries'] as List<dynamic>),
-      imageUrl: json['imageUrl'] as String,
+      id: json['id'] as String?,
+      fullName: json['fullName'] as String?,
+      email: json['email'] as String?,
+      phoneNumber: json['phoneNumber'] as String?,
+      address: json['address'] as String?,
+      gender: json['gender'] as String?,
+      jobRoles: (json['jobRoles'] as List<dynamic>?)?.cast<String>(),
+      role: json['role'] as String?,
+      countries: (json['countries'] as List<dynamic>?)?.cast<String>(),
+      imageUrl: json['imageUrl'] as String?,
     );
   }
 
