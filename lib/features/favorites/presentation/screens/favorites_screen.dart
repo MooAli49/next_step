@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-import '../../../../core/styles/app_styles.dart';
-import '../../../../core/theme/color_manager.dart';
-import '../../jobs/presentation/controllers/job_controller.dart';
-import '../../search/widgets/search_job_card_widget.dart';
+import '../../../../../core/styles/app_styles.dart';
+import '../../../../../core/theme/color_manager.dart';
+import '../../../jobs/presentation/controllers/job_controller.dart';
+import '../../../search/presentation/widgets/search_job_card_widget.dart';
 import '../widgets/empty_favorites_widget.dart';
 
 class FavoritesScreen extends StatefulWidget {

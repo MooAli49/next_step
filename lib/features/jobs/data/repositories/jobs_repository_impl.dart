@@ -19,8 +19,11 @@ class JobsRepositoryImpl extends JobsRepository {
   }
 
   @override
-  Future<ApiResult<List<JobModel>>> getAllJobs() async {
-    return await jobsDataSource.getAllJobs();
+  Future<ApiResult<List<JobModel>>> getAllJobs({
+    String limit = '10',
+    int page = 1,
+  }) async {
+    return await jobsDataSource.getAllJobs(limit: limit, page: page);
   }
 
   @override

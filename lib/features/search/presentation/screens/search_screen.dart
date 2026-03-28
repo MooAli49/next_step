@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-import '../../../../core/theme/color_manager.dart';
-import '../../jobs/presentation/controllers/job_controller.dart';
+import '../../../../../core/theme/color_manager.dart';
+import '../../../jobs/presentation/controllers/job_controller.dart';
 import '../widgets/empty_search_widget.dart';
 import '../widgets/search_filter_bottom_sheet.dart';
 import '../widgets/search_job_card_widget.dart';
@@ -44,19 +44,27 @@ class _SearchScreenState extends State<SearchScreen> {
                         ? const Center(child: CircularProgressIndicator())
                         : controller.jobs.isEmpty
                         ? const EmptySearchWidget()
-                        : ListView.builder(
-                            itemCount: controller.jobs.length,
-                            itemBuilder: (context, index) {
-                              final job = controller.jobs[index];
-                              return SearchJobCardWidget(
-                                job: job,
-                                onBookmarkToggle: () {
-                                  if (job.id != null) {
-                                    controller.toggleFavorite(job.id!);
-                                  }
-                                },
-                              );
+                        : NotificationListener<ScrollNotification>(
+                            onNotification: (notification) {
+                              if (notification is ScrollEndNotification) {
+                                controller.loadMoreJobs();
+                              }
+                              return false;
                             },
+                            child: ListView.builder(
+                              itemCount: controller.jobs.length,
+                              itemBuilder: (context, index) {
+                                final job = controller.jobs[index];
+                                return SearchJobCardWidget(
+                                  job: job,
+                                  onBookmarkToggle: () {
+                                    if (job.id != null) {
+                                      controller.toggleFavorite(job.id!);
+                                    }
+                                  },
+                                );
+                              },
+                            ),
                           ),
                   ),
                 ],

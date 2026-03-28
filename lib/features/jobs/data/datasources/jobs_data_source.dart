@@ -6,7 +6,10 @@ abstract class JobsDataSource {
 
   Future<ApiResult<void>> applyToJob(String jobId);
 
-  Future<ApiResult<List<JobModel>>> getAllJobs();
+  Future<ApiResult<List<JobModel>>> getAllJobs({
+    String limit = '10',
+    int page = 1,
+  });
 
   Future<ApiResult<void>> addFavoriteJob(String jobId);
 

@@ -16,7 +16,7 @@ import '../../features/jobs/data/datasources/jobs_data_source.dart';
 import '../../features/jobs/data/repositories/jobs_repository_impl.dart';
 import '../../features/jobs/domain/repositories/jobs_repository.dart';
 import '../../features/jobs/presentation/controllers/job_controller.dart';
-import '../../features/profile_setup/controllers/complete_profile_controller.dart';
+import '../../features/profile_setup/presentation/controllers/complete_profile_controller.dart';
 import '../../features/profile_setup/data/datasources/profile_api_data_source.dart';
 import '../../features/profile_setup/data/datasources/profile_data_source.dart';
 import '../../features/profile_setup/data/repositories/api_profile_repo.dart';

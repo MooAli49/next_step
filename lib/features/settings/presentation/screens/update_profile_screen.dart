@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-import '../../../../core/styles/app_styles.dart';
-import '../../../../core/theme/color_manager.dart';
-import '../../../core/extension/spacer.dart';
-import '../../../core/widgets/app_text_form_field.dart';
-import '../presentation/controllers/update_profile_controller.dart';
+import '../../../../../core/styles/app_styles.dart';
+import '../../../../../core/theme/color_manager.dart';
+import '../../../../core/extension/spacer.dart';
+import '../../../../core/widgets/app_text_form_field.dart';
+import '../controllers/update_profile_controller.dart';
 import '../widgets/profile_header_widget.dart';
 
 class UpdateProfileScreen extends GetView<UpdateProfileController> {

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-import '../../../core/extension/spacer.dart';
+import '../../../../core/extension/spacer.dart';
 import '../controllers/complete_profile_controller.dart';
 
 class PreferredLocationsWidget extends GetView<CompleteProfileController> {

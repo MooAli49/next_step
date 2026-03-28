@@ -3,9 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:next_step/features/jobs/data/models/job_model.dart';
 
-import '../../../../core/routing/routes.dart';
-import '../../../../core/styles/app_styles.dart';
-import '../../../../core/theme/color_manager.dart';
+import '../../../../../core/routing/routes.dart';
+import '../../../../../core/styles/app_styles.dart';
+import '../../../../../core/theme/color_manager.dart';
 
 class SearchJobCardWidget extends StatelessWidget {
   final JobModel job;

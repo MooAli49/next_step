@@ -68,9 +68,15 @@ class ApiJobsDataSource extends JobsDataSource {
   }
 
   @override
-  Future<ApiResult<List<JobModel>>> getAllJobs() async {
+  Future<ApiResult<List<JobModel>>> getAllJobs({String limit = '10', int page = 1}) async {
     try {
-      final response = await _dio.get(ApiConstant.listJobsEp);
+      final response = await _dio.get(
+        ApiConstant.listJobsEp,
+        queryParameters: {
+          'limit': limit,
+          'page': page,
+        },
+      );
 
       final apiResponse = ApiResponseModel<List<JobModel>>.fromJson(
         response.data,

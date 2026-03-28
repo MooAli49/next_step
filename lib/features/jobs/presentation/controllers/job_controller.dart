@@ -12,6 +12,9 @@ class JobController extends GetxController {
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
+  bool _isLoadingMore = false;
+  bool get isLoadingMore => _isLoadingMore;
+
   JobModel? _currentJob;
   JobModel? get currentJob => _currentJob;
 
@@ -116,7 +119,7 @@ class JobController extends GetxController {
     // No implementation needed as searchLocalJobs is used directly from UI
   }
 
-  // Local search filtering (without API calls)
+  // Local search filtering
   void searchLocalJobs(String query) {
     if (query.isEmpty) {
       // If query is empty, show all jobs
@@ -159,7 +162,6 @@ class JobController extends GetxController {
     }
   }
 
-  // Favorites methods
   Future<void> addFavoriteJob(String jobId) async {
     final result = await _jobsRepository.addFavoriteJob(jobId);
     result.when(
@@ -175,10 +177,24 @@ class JobController extends GetxController {
             _favoriteJobs.add(_jobs[jobIndex]);
           }
         }
+        Get.snackbar(
+          'Added to Favorites',
+          'Job has been added to your favorites.',
+          duration: const Duration(seconds: 2),
+          backgroundColor: ColorManager.green,
+          snackPosition: SnackPosition.BOTTOM,
+        );
         update();
       },
       onError: (error) {
         log('Error adding favorite: ${error.message}');
+        Get.snackbar(
+          'Error',
+          'Failed to add job to favorites.',
+          duration: const Duration(seconds: 2),
+          backgroundColor: ColorManager.red,
+          snackPosition: SnackPosition.BOTTOM,
+        );
       },
     );
   }
@@ -189,10 +205,24 @@ class JobController extends GetxController {
       onSuccess: (_) {
         _favoriteJobs.removeWhere((job) => job.id == jobId);
         log('Job removed from favorites: $jobId');
+        Get.snackbar(
+          'Removed from Favorites',
+          'Job has been removed from your favorites.',
+          duration: const Duration(seconds: 2),
+          backgroundColor: ColorManager.red,
+          snackPosition: SnackPosition.BOTTOM,
+        );
         update();
       },
       onError: (error) {
         log('Error removing favorite: ${error.message}');
+        Get.snackbar(
+          'Error',
+          'Failed to remove job from favorites.',
+          duration: const Duration(seconds: 2),
+          backgroundColor: ColorManager.red,
+          snackPosition: SnackPosition.BOTTOM,
+        );
       },
     );
   }
@@ -274,6 +304,34 @@ class JobController extends GetxController {
       onError: (error) {
         _isLoading = false;
         log('Error loading favorite jobs: ${error.message}');
+        update();
+      },
+    );
+  }
+
+  Future<void> loadMoreJobs() async {
+    if (_isLoadingMore) return; // Prevent multiple simultaneous loads
+
+    _isLoadingMore = true;
+    update();
+
+    final result = await _jobsRepository.getAllJobs(
+      limit: '10',
+      page:
+          (_jobs.length ~/ 10) +
+          1, // Calculate next page based on current count
+    );
+
+    result.when(
+      onSuccess: (data) {
+        _isLoadingMore = false;
+        _jobs.addAll(data);
+        log('Loaded more jobs: ${data.length} new jobs');
+        update();
+      },
+      onError: (error) {
+        _isLoadingMore = false;
+        log('Error loading more jobs: ${error.message}');
         update();
       },
     );

@@ -8,13 +8,13 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../../../core/constants/cache_constants.dart';
-import '../../../core/routing/routes.dart';
-import '../../../core/utils/cache_helper.dart';
-import '../data/models/complete_profile_request_model.dart';
-import '../data/models/country_model.dart';
-import '../data/models/job_role_model.dart';
-import '../domain/repositories/profile_repo.dart';
+import '../../../../core/constants/cache_constants.dart';
+import '../../../../core/routing/routes.dart';
+import '../../../../core/utils/cache_helper.dart';
+import '../../data/models/complete_profile_request_model.dart';
+import '../../data/models/country_model.dart';
+import '../../data/models/job_role_model.dart';
+import '../../domain/repositories/profile_repo.dart';
 
 class CompleteProfileController extends GetxController {
   final ProfileRepo profileRepo;
