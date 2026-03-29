@@ -20,9 +20,7 @@ class ApiResponseModel<T> {
     return ApiResponseModel<T>(
       success: json['success'] as bool?,
       message: json['message'] as String?,
-      data: json['data'] != null
-          ? fromJsonT(json['data'])
-          : null,
+      data: json['data'] != null ? fromJsonT(json['data']) : null,
       timestamp: json['timestamp'] as String?,
       statusCode: json['statusCode'] as int?,
     );

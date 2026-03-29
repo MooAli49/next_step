@@ -61,37 +61,6 @@ class JobController extends GetxController {
     );
   }
 
-  Future<void> applyToJob() async {
-    if (_currentJob?.id == null) return;
-
-    _isLoading = true;
-    update();
-
-    final result = await _jobsRepository.applyToJob(_currentJob!.id!);
-    result.when(
-      onSuccess: (_) {
-        _isLoading = false;
-        log('Applied to job successfully');
-        Get.snackbar(
-          'Success',
-          'You have successfully applied to this job!',
-          duration: const Duration(seconds: 2),
-        );
-        update();
-      },
-      onError: (error) {
-        _isLoading = false;
-        log('Error applying to job: ${error.message}');
-        Get.snackbar(
-          'Error',
-          error.message ?? 'Failed to apply to job',
-          duration: const Duration(seconds: 2),
-        );
-        update();
-      },
-    );
-  }
-
   Future<void> getAllJobs() async {
     _isLoading = true;
     update();

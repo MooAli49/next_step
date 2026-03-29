@@ -4,7 +4,6 @@ import '../models/job_model.dart';
 abstract class JobsDataSource {
   Future<ApiResult<JobModel>> getJobDetails(String jobId);
 
-  Future<ApiResult<void>> applyToJob(String jobId);
 
   Future<ApiResult<List<JobModel>>> getAllJobs({
     String limit = '10',

@@ -47,35 +47,14 @@ class ApiJobsDataSource extends JobsDataSource {
   }
 
   @override
-  Future<ApiResult<void>> applyToJob(String jobId) async {
-    try {
-      await _dio.post(
-        ApiConstant.getJobApplicationsEp(jobId),
-        data: {'jobId': jobId},
-      );
-
-      log('ApiJobsDataSource.applyToJob: success for jobId: $jobId');
-      return ApiResult.success(null);
-    } on Exception catch (e) {
-      final apiResponse = ApiResponseModel.fromJson(
-        e is DioException && e.response != null ? e.response!.data : null,
-        (json) => null,
-      );
-
-      log('ApiJobsDataSource.applyToJob: exception occurred: $apiResponse');
-      return ApiResult.error(apiResponse);
-    }
-  }
-
-  @override
-  Future<ApiResult<List<JobModel>>> getAllJobs({String limit = '10', int page = 1}) async {
+  Future<ApiResult<List<JobModel>>> getAllJobs({
+    String limit = '10',
+    int page = 1,
+  }) async {
     try {
       final response = await _dio.get(
         ApiConstant.listJobsEp,
-        queryParameters: {
-          'limit': limit,
-          'page': page,
-        },
+        queryParameters: {'limit': limit, 'page': page},
       );
 
       final apiResponse = ApiResponseModel<List<JobModel>>.fromJson(

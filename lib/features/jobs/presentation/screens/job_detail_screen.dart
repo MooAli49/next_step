@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../../../../core/theme/color_manager.dart';
+import '../../../../core/routing/routes.dart';
 import '../controllers/job_controller.dart';
 import '../widgets/job_description_section.dart';
 import '../widgets/job_detail_header.dart';
@@ -87,7 +88,10 @@ class JobDetailScreen extends GetView<JobController> {
       ),
       child: ElevatedButton(
         onPressed: () {
-          controller.applyToJob();
+          Get.toNamed(
+            Routes.apply,
+            arguments: {'jobId': controller.currentJob?.id},
+          );
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: ColorManager.primary,

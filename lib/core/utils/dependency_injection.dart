@@ -1,6 +1,11 @@
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 
+import '../../features/apply/controllers/apply_controller.dart';
+import '../../features/apply/data/datasources/api_apply_data_source.dart';
+import '../../features/apply/data/datasources/apply_remote_data_source.dart';
+import '../../features/apply/data/repositories/api_apply_repository.dart';
+import '../../features/apply/domain/repositories/apply_repo.dart';
 import '../../features/auth/data/datasources/auth_api_data_source.dart';
 import '../../features/auth/data/datasources/auth_remote_data_source.dart';
 import '../../features/auth/data/repositories/api_auth_repository.dart';
@@ -16,11 +21,11 @@ import '../../features/jobs/data/datasources/jobs_data_source.dart';
 import '../../features/jobs/data/repositories/jobs_repository_impl.dart';
 import '../../features/jobs/domain/repositories/jobs_repository.dart';
 import '../../features/jobs/presentation/controllers/job_controller.dart';
-import '../../features/profile_setup/presentation/controllers/complete_profile_controller.dart';
 import '../../features/profile_setup/data/datasources/profile_api_data_source.dart';
 import '../../features/profile_setup/data/datasources/profile_data_source.dart';
 import '../../features/profile_setup/data/repositories/api_profile_repo.dart';
 import '../../features/profile_setup/domain/repositories/profile_repo.dart';
+import '../../features/profile_setup/presentation/controllers/complete_profile_controller.dart';
 import '../../features/settings/data/datasource/api_settings_data_source.dart';
 import '../../features/settings/data/datasource/settings_data_source.dart';
 import '../../features/settings/data/repositories/settings_repo_impl.dart';
@@ -35,6 +40,7 @@ void setupDependencyInjection() {
   _setupHomeDI();
   _setupSettingsDI();
   _setupJobsDI();
+  _setupApplyDI();
 }
 
 void _setupProfileDI() {
@@ -93,6 +99,18 @@ void _setupJobsDI() {
   );
   Get.lazyPut<JobController>(
     () => JobController(Get.find<JobsRepository>()),
+    fenix: true,
+  );
+}
+
+void _setupApplyDI() {
+  Get.lazyPut<ApplyRemoteDataSource>(() => ApiApplyDataSource(), fenix: true);
+  Get.lazyPut<ApplyRepo>(
+    () => ApiApplyRepository(Get.find<ApplyRemoteDataSource>()),
+    fenix: true,
+  );
+  Get.lazyPut<ApplyController>(
+    () => ApplyController(Get.find<ApplyRepo>()),
     fenix: true,
   );
 }

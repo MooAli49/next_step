@@ -4,9 +4,11 @@ import '../../../jobs/data/models/job_model.dart';
 abstract class JobsRepository {
   Future<ApiResult<JobModel>> getJobDetails(String jobId);
 
-  Future<ApiResult<void>> applyToJob(String jobId);
 
-  Future<ApiResult<List<JobModel>>> getAllJobs({String limit = '10', int page = 1});
+  Future<ApiResult<List<JobModel>>> getAllJobs({
+    String limit = '10',
+    int page = 1,
+  });
 
   Future<ApiResult<void>> addFavoriteJob(String jobId);
 
