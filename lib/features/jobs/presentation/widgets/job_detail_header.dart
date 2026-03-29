@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:next_step/features/jobs/data/models/job_model.dart';
+import 'package:get/get.dart';
 
 import '../../../../../core/styles/app_styles.dart';
 import '../../../../../core/theme/color_manager.dart';
+import '../controllers/job_controller.dart';
 
-class JobDetailHeader extends StatelessWidget {
-  const JobDetailHeader({super.key, required this.job});
-  final JobModel job;
+class JobDetailHeader extends GetView<JobController> {
+  const JobDetailHeader({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -33,11 +33,15 @@ class JobDetailHeader extends StatelessWidget {
             ),
             IconButton(
               icon: Icon(
-                Icons.bookmark_border,
+                (controller.currentJob?.isFavorite ?? false)
+                    ? Icons.bookmark
+                    : Icons.bookmark_border,
                 color: ColorManager.primary,
                 size: 24.sp,
               ),
-              onPressed: () {},
+              onPressed: () {
+                controller.toggleFavorite(controller.currentJob?.id ?? '');
+              },
               padding: EdgeInsets.zero,
               constraints: const BoxConstraints(),
             ),
@@ -55,7 +59,7 @@ class JobDetailHeader extends StatelessWidget {
                 borderRadius: BorderRadius.circular(16.r),
               ),
               child: Image.network(
-                job.postedBy?.imageUrl ?? '',
+                controller.currentJob?.postedBy?.imageUrl ?? '',
                 fit: BoxFit.cover,
               ),
             ),
@@ -65,14 +69,14 @@ class JobDetailHeader extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    job.title ?? '',
+                    controller.currentJob?.title ?? '',
                     style: AppStyles.font20w700,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
                   SizedBox(height: 4.h),
                   Text(
-                    job.postedBy?.fullName ?? '',
+                    controller.currentJob?.postedBy?.fullName ?? '',
                     style: TextStyle(color: ColorManager.grey, fontSize: 14.sp),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -93,7 +97,7 @@ class JobDetailHeader extends StatelessWidget {
             SizedBox(width: 8.w),
             Expanded(
               child: Text(
-                job.location ?? '',
+                controller.currentJob?.location ?? '',
                 style: TextStyle(
                   color: ColorManager.black,
                   fontSize: 14.sp,
@@ -116,7 +120,7 @@ class JobDetailHeader extends StatelessWidget {
             SizedBox(width: 8.w),
             Expanded(
               child: Text(
-                '${job.salaryRange}',
+                '${controller.currentJob?.salaryRange}',
                 style: TextStyle(
                   color: ColorManager.black,
                   fontSize: 14.sp,

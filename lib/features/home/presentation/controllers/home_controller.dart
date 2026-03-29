@@ -25,12 +25,6 @@ class HomeController extends GetxController {
   final partTimeJobCount = Rxn<int>(0);
   final fullTimeJobCount = Rxn<int>(0);
 
-  @override
-  void onInit() {
-    super.onInit();
-    getJobsStats();
-  }
-
   Future<void> getJobsStats() async {
     _isLoading.value = true;
 

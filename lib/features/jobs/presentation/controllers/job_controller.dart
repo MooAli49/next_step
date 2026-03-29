@@ -1,8 +1,8 @@
 import 'dart:developer';
 
 import 'package:get/get.dart';
-import 'package:next_step/core/theme/color_manager.dart';
 
+import '../../../../core/theme/color_manager.dart';
 import '../../data/models/job_model.dart';
 import '../../domain/repositories/jobs_repository.dart';
 
@@ -31,13 +31,9 @@ class JobController extends GetxController {
     super.onInit();
     // Get jobId from route parameters
     final jobId = Get.parameters['jobId'];
-    log('JobController.onInit() - jobId from parameters: $jobId');
-    log('JobController.onInit() - All parameters: ${Get.parameters}');
+
     if (jobId != null && jobId.isNotEmpty) {
-      log('JobController.onInit() - Calling getJobDetails with jobId: $jobId');
       getJobDetails(jobId);
-    } else {
-      log('JobController.onInit() - jobId is null or empty!');
     }
   }
 
@@ -225,35 +221,33 @@ class JobController extends GetxController {
   }
 
   Future<void> toggleFavorite(String jobId) async {
-    // Find the job in either list
-    JobModel? job;
-    bool isInFavorites = false;
+    // Capture the current state before toggle
+    final wasFavorite = _currentJob?.isFavorite ?? false;
 
-    var jobIndex = _jobs.indexWhere((j) => j.id == jobId);
-    if (jobIndex != -1) {
-      job = _jobs[jobIndex];
-      isInFavorites = job.isFavorite ?? false;
-    } else {
-      jobIndex = _favoriteJobs.indexWhere((j) => j.id == jobId);
-      if (jobIndex != -1) {
-        job = _favoriteJobs[jobIndex];
-        isInFavorites =
-            true; // If it's in _favoriteJobs, it's definitely a favorite
-      }
+    // Update the current job if it matches
+    if (_currentJob?.id == jobId) {
+      _currentJob!.isFavorite = !wasFavorite;
     }
 
-    if (job == null) return;
+    // Also update in jobs list if it exists there
+    final jobInList = _jobs.firstWhereOrNull((job) => job.id == jobId);
+    if (jobInList != null) {
+      jobInList.isFavorite = !wasFavorite;
+    }
 
-    // Update UI optimistically
-    job.isFavorite = !isInFavorites;
+    // Update UI immediately
     update();
 
-    // Call the API
-    if (isInFavorites) {
+    // Call the API based on the original state
+    if (wasFavorite) {
       await removeFavoriteJob(jobId);
     } else {
       await addFavoriteJob(jobId);
     }
+  }
+
+  bool isFavorite(String jobId) {
+    return _favoriteJobs.any((job) => job.id == jobId);
   }
 
   Future<void> getFavoriteJobs() async {

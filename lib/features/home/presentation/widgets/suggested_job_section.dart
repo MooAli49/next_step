@@ -33,10 +33,6 @@ class SuggestedJobSection extends GetView<HomeController> {
                 itemCount: controller.suggestedJobs?.length ?? 0,
                 itemBuilder: (context, index) {
                   final job = controller.suggestedJobs![index];
-                  // Check if job is in favorites list
-                  final isFavorite = jobController.favoriteJobs.any(
-                    (fav) => fav.id == job.id,
-                  );
 
                   return Padding(
                     padding: EdgeInsets.only(bottom: 12.h),
@@ -97,13 +93,13 @@ class SuggestedJobSection extends GetView<HomeController> {
                                 GestureDetector(
                                   onTap: () {
                                     if (job.id != null) {
-                                      Get.find<JobController>().toggleFavorite(
-                                        job.id!,
-                                      );
+                                      jobController.toggleFavorite(job.id!);
+                                      //to refresh suggested jobs and update favorite state
+                                      controller.getJobsStats();
                                     }
                                   },
                                   child: Icon(
-                                    isFavorite
+                                    (jobController.isFavorite(job.id ?? ''))
                                         ? Icons.bookmark
                                         : Icons.bookmark_border,
                                     color: ColorManager.primary,

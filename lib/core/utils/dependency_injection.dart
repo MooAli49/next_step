@@ -30,6 +30,7 @@ import '../../features/settings/data/datasource/api_settings_data_source.dart';
 import '../../features/settings/data/datasource/settings_data_source.dart';
 import '../../features/settings/data/repositories/settings_repo_impl.dart';
 import '../../features/settings/domain/repositories/settings_repo.dart';
+import '../../features/settings/presentation/controllers/my_applications_controller.dart';
 import '../../features/settings/presentation/controllers/update_profile_controller.dart';
 import '../../features/splash%20&%20onboarding/controller/onboarding_controller.dart';
 
@@ -87,6 +88,13 @@ void _setupSettingsDI() {
   );
   Get.lazyPut<UpdateProfileController>(
     () => UpdateProfileController(Get.find<SettingsRepo>()),
+    fenix: true,
+  );
+  Get.lazyPut<MyApplicationsController>(
+    () => MyApplicationsController(
+      settingsRepo: Get.find<SettingsRepo>(),
+      applyRepo: Get.find<ApplyRepo>(),
+    ),
     fenix: true,
   );
 }

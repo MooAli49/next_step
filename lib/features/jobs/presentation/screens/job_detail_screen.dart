@@ -52,13 +52,13 @@ class JobDetailScreen extends GetView<JobController> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        JobDetailHeader(job: controller.currentJob!),
+                        JobDetailHeader(),
                         SizedBox(height: 24.h),
-                        JobDetailInfoRow(job: controller.currentJob!),
+                        JobDetailInfoRow(),
                         SizedBox(height: 24.h),
-                        JobSkillsSection(job: controller.currentJob!),
+                        JobSkillsSection(),
                         SizedBox(height: 24.h),
-                        JobDescriptionSection(job: controller.currentJob!),
+                        JobDescriptionSection(),
                         SizedBox(height: 24.h),
                       ],
                     ),

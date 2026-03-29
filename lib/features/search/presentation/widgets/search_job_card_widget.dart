@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:next_step/features/jobs/data/models/job_model.dart';
 
 import '../../../../../core/routing/routes.dart';
 import '../../../../../core/styles/app_styles.dart';
 import '../../../../../core/theme/color_manager.dart';
+import '../../../jobs/data/models/job_model.dart';
+import '../../../jobs/presentation/controllers/job_controller.dart';
 
 class SearchJobCardWidget extends StatelessWidget {
   final JobModel job;
@@ -19,6 +20,8 @@ class SearchJobCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final JobController jobController = Get.find<JobController>();
+
     return GestureDetector(
       onTap: () =>
           Get.toNamed(Routes.jobDetails, parameters: {'jobId': job.id ?? ''}),
@@ -72,7 +75,7 @@ class SearchJobCardWidget extends StatelessWidget {
                 GestureDetector(
                   onTap: onBookmarkToggle,
                   child: Icon(
-                    (job.isFavorite ?? false)
+                    jobController.isFavorite(job.id ?? '')
                         ? Icons.bookmark
                         : Icons.bookmark_border,
                     color: ColorManager.primary,

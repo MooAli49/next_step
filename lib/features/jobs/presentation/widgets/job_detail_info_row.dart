@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:next_step/features/jobs/data/models/job_model.dart';
 
 import '../../../../../core/styles/app_styles.dart';
 import '../../../../../core/theme/color_manager.dart';
+import '../controllers/job_controller.dart';
 
-class JobDetailInfoRow extends StatelessWidget {
-  const JobDetailInfoRow({super.key, required this.job});
-  final JobModel job;
+class JobDetailInfoRow extends GetView<JobController> {
+  const JobDetailInfoRow({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,16 +18,19 @@ class JobDetailInfoRow extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            _buildInfoItem('Experience', job.experience ?? ''),
+            _buildInfoItem(
+              'Experience',
+              controller.currentJob?.experience ?? '',
+            ),
             _buildDivider(),
-            _buildInfoItem('Job Type', job.jobType ?? ''),
+            _buildInfoItem('Job Type', controller.currentJob?.jobType ?? ''),
             _buildDivider(),
-            _buildInfoItem('Level', job.jobLevel ?? ''),
+            _buildInfoItem('Level', controller.currentJob?.jobLevel ?? ''),
           ],
         ),
         SizedBox(height: 16.h),
         Text(
-          'Last updated: ${job.updatedAt != null ? DateFormat.yMMMd().format(job.updatedAt!) : 'N/A'}',
+          'Last updated: ${controller.currentJob?.updatedAt != null ? DateFormat.yMMMd().format(controller.currentJob!.updatedAt!) : 'N/A'}',
           style: TextStyle(color: ColorManager.grey99, fontSize: 12.sp),
         ),
       ],
