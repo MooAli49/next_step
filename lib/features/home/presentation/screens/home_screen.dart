@@ -12,8 +12,23 @@ import '../widgets/home_promo_banner.dart';
 import '../widgets/home_search_bar.dart';
 import '../widgets/suggested_job_section.dart';
 
-class HomeScreen extends GetView<HomeController> {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final HomeController controller = Get.find<HomeController>();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      controller.getJobsStats();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -1,27 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:next_step/features/jobs/data/models/job_model.dart';
 
 import '../../../../../core/routing/routes.dart';
 import '../../../../../core/styles/app_styles.dart';
 import '../../../../../core/theme/color_manager.dart';
+import '../../../jobs/data/models/job_model.dart';
+import '../../../jobs/presentation/controllers/job_controller.dart';
 
 class SearchJobCardWidget extends StatelessWidget {
   final JobModel job;
-  final VoidCallback? onBookmarkToggle;
+  final VoidCallback onBookmarkToggle;
 
   const SearchJobCardWidget({
     super.key,
     required this.job,
-    this.onBookmarkToggle,
+    required this.onBookmarkToggle,
   });
 
   @override
   Widget build(BuildContext context) {
+    final JobController jobController = Get.find<JobController>();
+
     return GestureDetector(
       onTap: () =>
-          Get.toNamed(Routes.jobDetails, parameters: {'jobId': job.id ?? ''}),
+          Get.toNamed(Routes.jobDetails, parameters: {'jobId': job.id}),
       child: Container(
         margin: EdgeInsets.only(bottom: 16.h),
         padding: EdgeInsets.all(16.r),
@@ -43,7 +46,17 @@ class SearchJobCardWidget extends StatelessWidget {
                     color: ColorManager.greyF3,
                     borderRadius: BorderRadius.circular(12.r),
                   ),
-                  child: Image.network(job.postedBy?.imageUrl ?? ''),
+                  child: Image.network(
+                    job.postedBy?.imageUrl ?? '',
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Icon(
+                        Icons.image_not_supported_outlined,
+                        color: ColorManager.grey,
+                        size: 24.sp,
+                      );
+                    },
+                  ),
                 ),
                 SizedBox(width: 12.w),
                 Expanded(
@@ -72,7 +85,7 @@ class SearchJobCardWidget extends StatelessWidget {
                 GestureDetector(
                   onTap: onBookmarkToggle,
                   child: Icon(
-                    (job.isFavorite ?? false)
+                    jobController.isFavorite(job.id)
                         ? Icons.bookmark
                         : Icons.bookmark_border,
                     color: ColorManager.primary,

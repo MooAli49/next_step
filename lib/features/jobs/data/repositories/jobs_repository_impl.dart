@@ -14,11 +14,6 @@ class JobsRepositoryImpl extends JobsRepository {
   }
 
   @override
-  Future<ApiResult<void>> applyToJob(String jobId) async {
-    return await jobsDataSource.applyToJob(jobId);
-  }
-
-  @override
   Future<ApiResult<List<JobModel>>> getAllJobs({
     String limit = '10',
     int page = 1,

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:next_step/features/jobs/data/models/job_model.dart';
+import 'package:get/get_state_manager/src/simple/get_view.dart';
 
 import '../../../../../core/styles/app_styles.dart';
 import '../../../../../core/theme/color_manager.dart';
+import '../controllers/job_controller.dart';
 
-class JobDescriptionSection extends StatelessWidget {
-  const JobDescriptionSection({super.key, required this.job});
-  final JobModel job;
+class JobDescriptionSection extends GetView<JobController> {
+  const JobDescriptionSection({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,7 @@ class JobDescriptionSection extends StatelessWidget {
         Text('Job Description', style: AppStyles.font16w600),
         SizedBox(height: 12.h),
         Text(
-          job.description ?? 'No description available.',
+          controller.currentJob?.description ?? 'No description available.',
           style: TextStyle(
             color: ColorManager.grey,
             fontSize: 13.sp,
@@ -27,18 +27,24 @@ class JobDescriptionSection extends StatelessWidget {
         SizedBox(height: 24.h),
         Text('Responsibilities', style: AppStyles.font16w600),
         SizedBox(height: 12.h),
-        if (job.responsibilities != null)
-          ...job.responsibilities!.map((resp) => _buildBulletPoint(resp)),
+        if (controller.currentJob?.responsibilities != null)
+          ...controller.currentJob!.responsibilities!.map(
+            (resp) => _buildBulletPoint(resp),
+          ),
         SizedBox(height: 24.h),
         Text('Requirements', style: AppStyles.font16w600),
         SizedBox(height: 12.h),
-        if (job.requirements != null)
-          ...job.requirements!.map((req) => _buildBulletPoint(req)),
+        if (controller.currentJob?.requirements != null)
+          ...controller.currentJob!.requirements!.map(
+            (req) => _buildBulletPoint(req),
+          ),
         SizedBox(height: 24.h),
         Text('Benefits', style: AppStyles.font16w600),
         SizedBox(height: 12.h),
-        if (job.benefits != null)
-          ...job.benefits!.map((benefit) => _buildBulletPoint(benefit)),
+        if (controller.currentJob?.benefits != null)
+          ...controller.currentJob!.benefits!.map(
+            (benefit) => _buildBulletPoint(benefit),
+          ),
       ],
     );
   }

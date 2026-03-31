@@ -1,8 +1,8 @@
 class JobModel {
-  String? id;
+  String id;
   String? title;
-  String? description;
   String? slug;
+  String? description;
   String? location;
   String? experience;
   String? jobType;
@@ -13,15 +13,14 @@ class JobModel {
   List<String>? requirements;
   List<String>? benefits;
   String? postedById;
-  int? categoryId;
   DateTime? createdAt;
   DateTime? updatedAt;
+  DateTime? addedAt;
   PostedBy? postedBy;
-  JobCategory? category;
-  bool? isFavorite;
+  bool? isFavorite; // Local field to track favorite status
 
   JobModel({
-    this.id,
+    required this.id,
     this.title,
     this.slug,
     this.description,
@@ -35,126 +34,85 @@ class JobModel {
     this.requirements,
     this.benefits,
     this.postedById,
-    this.categoryId,
     this.createdAt,
     this.updatedAt,
+    this.addedAt,
     this.postedBy,
-    this.category,
     this.isFavorite,
   });
 
   factory JobModel.fromJson(Map<String, dynamic> json) {
+    final dynamic rawId = json['id'];
+    String resolvedId;
+    if (rawId is String) {
+      resolvedId = rawId;
+    } else {
+      // If id is not a String (e.g., int), fall back to jobId
+      final dynamic jobId = json['jobId'];
+      resolvedId = jobId?.toString() ?? rawId.toString();
+    }
+
     return JobModel(
-      id: json['id']?.toString(),
-      title: json['title'] as String?,
-      slug: json['slug'] as String?,
-      description: json['description'] as String?,
-      location: json['location'] as String?,
-      experience: json['experience'] as String?,
-      jobType: json['jobType'] as String?,
-      jobLevel: json['jobLevel'] as String?,
-      salaryRange: json['salaryRange'] as String?,
-      skills: (json['skills'] as List<dynamic>?)
-          ?.map((e) => e as String)
-          .toList(),
-      responsibilities: (json['responsibilities'] as List<dynamic>?)
-          ?.map((e) => e as String)
-          .toList(),
-      requirements: (json['requirements'] as List<dynamic>?)
-          ?.map((e) => e as String)
-          .toList(),
-      benefits: (json['benefits'] as List<dynamic>?)
-          ?.map((e) => e as String)
-          .toList(),
-      postedById: json['postedById'] as String?,
-      categoryId: json['categoryId'] as int?,
-      createdAt: json['createdAt'] != null
-          ? DateTime.parse(json['createdAt'] as String)
+      id: resolvedId,
+      title: json['title'],
+      slug: json['slug'],
+      description: json['description'],
+      location: json['location'],
+      experience: json['experience'],
+      jobType: json['jobType'],
+      jobLevel: json['jobLevel'],
+      salaryRange: json['salaryRange'],
+      skills: json['skills'] != null ? List<String>.from(json['skills']) : null,
+      responsibilities: json['responsibilities'] != null
+          ? List<String>.from(json['responsibilities'])
           : null,
-      updatedAt: json['updatedAt'] != null
-          ? DateTime.parse(json['updatedAt'] as String)
+      requirements: json['requirements'] != null
+          ? List<String>.from(json['requirements'])
           : null,
+      benefits: json['benefits'] != null
+          ? List<String>.from(json['benefits'])
+          : null,
+      postedById: json['postedById'],
       postedBy: json['postedBy'] != null
           ? PostedBy.fromJson(json['postedBy'] as Map<String, dynamic>)
           : null,
-      isFavorite: json['isFavorite'] as bool?,
-      category: json['category'] != null
-          ? JobCategory.fromJson(json['category'] as Map<String, dynamic>)
+      createdAt: json['createdAt'] != null
+          ? DateTime.parse(json['createdAt'])
           : null,
+      updatedAt: json['updatedAt'] != null
+          ? DateTime.parse(json['updatedAt'])
+          : null,
+      addedAt: json['addedAt'] != null ? DateTime.parse(json['addedAt']) : null,
+      isFavorite: json['isFavorite'],
     );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'title': title,
-      'slug': slug,
-      'description': description,
-      'location': location,
-      'experience': experience,
-      'jobType': jobType,
-      'jobLevel': jobLevel,
-      'salaryRange': salaryRange,
-      'skills': skills,
-      'responsibilities': responsibilities,
-      'requirements': requirements,
-      'benefits': benefits,
-      'postedById': postedById,
-      'categoryId': categoryId,
-      'createdAt': createdAt?.toIso8601String(),
-      'updatedAt': updatedAt?.toIso8601String(),
-      'postedBy': postedBy?.toJson(),
-      'isFavorite': isFavorite,
-      'category': category?.toJson(),
-    };
   }
 }
 
 class PostedBy {
-  final String? id;
-  final String? fullName;
-  final String? email;
-  final String? imageUrl;
-  final String? role;
+  String? id;
+  String? fullName;
+  String? email;
+  String? role;
+  String? imageUrl;
 
-  PostedBy({this.id, this.fullName, this.email, this.imageUrl, this.role});
+  PostedBy({this.id, this.fullName, this.email, this.role, this.imageUrl});
 
   factory PostedBy.fromJson(Map<String, dynamic> json) {
     return PostedBy(
-      id: json['id'] as String?,
-      fullName: json['fullName'] as String?,
-      email: json['email'] as String?,
-      imageUrl: json['imageUrl'] as String?,
-      role: json['role'] as String?,
+      id: json['id'],
+      fullName: json['fullName'],
+      email: json['email'],
+      role: json['role'],
+      imageUrl: json['imageUrl'],
     );
   }
-
   Map<String, dynamic> toJson() {
     return {
       'id': id,
       'fullName': fullName,
       'email': email,
-      'imageUrl': imageUrl,
       'role': role,
+      'imageUrl': imageUrl,
     };
-  }
-}
-
-class JobCategory {
-  final int? id;
-  final String? name;
-  final String? description;
-
-  JobCategory({this.id, this.name, this.description});
-
-  factory JobCategory.fromJson(Map<String, dynamic> json) {
-    return JobCategory(
-      id: json['id'] as int?,
-      name: json['name'] as String?,
-      description: json['description'] as String?,
-    );
-  }
-  Map<String, dynamic> toJson() {
-    return {'id': id, 'name': name, 'description': description};
   }
 }

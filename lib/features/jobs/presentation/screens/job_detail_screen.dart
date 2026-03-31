@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../../../../core/theme/color_manager.dart';
+import '../../../../core/routing/routes.dart';
 import '../controllers/job_controller.dart';
 import '../widgets/job_description_section.dart';
 import '../widgets/job_detail_header.dart';
@@ -16,14 +17,26 @@ class JobDetailScreen extends GetView<JobController> {
 
   @override
   Widget build(BuildContext context) {
-    // Get the jobId from route parameters when this screen is navigated to
-    final jobId = Get.parameters['jobId'];
-    log('JobDetailScreen.build() - jobId from route: $jobId');
+    // Get the jobId from route parameters or arguments when this screen is navigated to
+    final paramsJobId = Get.parameters['jobId'];
+    final args = Get.arguments;
+
+    String? jobId;
+    if (paramsJobId != null && paramsJobId.isNotEmpty) {
+      jobId = paramsJobId;
+    } else if (args is Map && args['jobId'] != null) {
+      final argJobId = args['jobId'].toString();
+      if (argJobId.isNotEmpty) {
+        jobId = argJobId;
+      }
+    }
+
+    log('JobDetailScreen.build() - jobId: $jobId');
 
     // Load job details when jobId is present
     if (jobId != null && jobId.isNotEmpty) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        controller.getJobDetails(jobId);
+        controller.getJobDetails(jobId!);
       });
     }
 
@@ -51,13 +64,13 @@ class JobDetailScreen extends GetView<JobController> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        JobDetailHeader(job: controller.currentJob!),
+                        JobDetailHeader(),
                         SizedBox(height: 24.h),
-                        JobDetailInfoRow(job: controller.currentJob!),
+                        JobDetailInfoRow(),
                         SizedBox(height: 24.h),
-                        JobSkillsSection(job: controller.currentJob!),
+                        JobSkillsSection(),
                         SizedBox(height: 24.h),
-                        JobDescriptionSection(job: controller.currentJob!),
+                        JobDescriptionSection(),
                         SizedBox(height: 24.h),
                       ],
                     ),
@@ -87,7 +100,10 @@ class JobDetailScreen extends GetView<JobController> {
       ),
       child: ElevatedButton(
         onPressed: () {
-          controller.applyToJob();
+          Get.toNamed(
+            Routes.apply,
+            arguments: {'jobId': controller.currentJob?.id},
+          );
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: ColorManager.primary,

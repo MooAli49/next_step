@@ -45,12 +45,8 @@ class _SearchScreenState extends State<SearchScreen> {
                         : controller.jobs.isEmpty
                         ? const EmptySearchWidget()
                         : NotificationListener<ScrollNotification>(
-                            onNotification: (notification) {
-                              if (notification is ScrollEndNotification) {
-                                controller.loadMoreJobs();
-                              }
-                              return false;
-                            },
+                            onNotification: (notification) =>
+                                _onScroll(notification, controller),
                             child: ListView.builder(
                               itemCount: controller.jobs.length,
                               itemBuilder: (context, index) {
@@ -58,15 +54,19 @@ class _SearchScreenState extends State<SearchScreen> {
                                 return SearchJobCardWidget(
                                   job: job,
                                   onBookmarkToggle: () {
-                                    if (job.id != null) {
-                                      controller.toggleFavorite(job.id!);
-                                    }
+                                    controller.toggleFavorite(job.id);
                                   },
                                 );
                               },
                             ),
                           ),
                   ),
+                  controller.isLoadingMore
+                      ? Padding(
+                          padding: EdgeInsets.symmetric(vertical: 16.h),
+                          child: const CircularProgressIndicator(),
+                        )
+                      : const SizedBox.shrink(),
                 ],
               ),
             ),
@@ -132,5 +132,19 @@ class _SearchScreenState extends State<SearchScreen> {
         ),
       ],
     );
+  }
+
+  bool _onScroll(ScrollNotification notification, JobController controller) {
+    final maxScroll = notification.metrics.maxScrollExtent;
+    final currentScroll = notification.metrics.pixels;
+    final triggerDistance = 200.0; // Distance from bottom to trigger load more
+
+    if (notification is ScrollEndNotification) {
+      if (maxScroll - currentScroll <= triggerDistance &&
+          !controller.isLoadingMore) {
+        controller.loadMoreJobs();
+      }
+    }
+    return false;
   }
 }

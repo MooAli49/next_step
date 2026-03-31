@@ -1,8 +1,8 @@
 import 'dart:developer';
 
 import 'package:get/get.dart';
-import 'package:next_step/core/theme/color_manager.dart';
 
+import '../../../../core/theme/color_manager.dart';
 import '../../data/models/job_model.dart';
 import '../../domain/repositories/jobs_repository.dart';
 
@@ -26,20 +26,16 @@ class JobController extends GetxController {
 
   JobController(this._jobsRepository);
 
-  @override
-  void onInit() {
-    super.onInit();
-    // Get jobId from route parameters
-    final jobId = Get.parameters['jobId'];
-    log('JobController.onInit() - jobId from parameters: $jobId');
-    log('JobController.onInit() - All parameters: ${Get.parameters}');
-    if (jobId != null && jobId.isNotEmpty) {
-      log('JobController.onInit() - Calling getJobDetails with jobId: $jobId');
-      getJobDetails(jobId);
-    } else {
-      log('JobController.onInit() - jobId is null or empty!');
-    }
-  }
+  // @override
+  // void onInit() {
+  //   super.onInit();
+  //   // Get jobId from route parameters
+  //   final jobId = Get.parameters['jobId'];
+
+  //   if (jobId != null && jobId.isNotEmpty) {
+  //     getJobDetails(jobId);
+  //   }
+  // }
 
   Future<void> getJobDetails(String jobId) async {
     _isLoading = true;
@@ -56,37 +52,6 @@ class JobController extends GetxController {
       onError: (error) {
         _isLoading = false;
         log('Error loading job details: ${error.message}');
-        update();
-      },
-    );
-  }
-
-  Future<void> applyToJob() async {
-    if (_currentJob?.id == null) return;
-
-    _isLoading = true;
-    update();
-
-    final result = await _jobsRepository.applyToJob(_currentJob!.id!);
-    result.when(
-      onSuccess: (_) {
-        _isLoading = false;
-        log('Applied to job successfully');
-        Get.snackbar(
-          'Success',
-          'You have successfully applied to this job!',
-          duration: const Duration(seconds: 2),
-        );
-        update();
-      },
-      onError: (error) {
-        _isLoading = false;
-        log('Error applying to job: ${error.message}');
-        Get.snackbar(
-          'Error',
-          error.message ?? 'Failed to apply to job',
-          duration: const Duration(seconds: 2),
-        );
         update();
       },
     );
@@ -135,21 +100,17 @@ class JobController extends GetxController {
       // Filter jobs locally based on query
       final lowerQuery = query.toLowerCase();
       _jobs = _jobs.where((job) {
+        final id = job.id.toLowerCase();
         final title = job.title?.toLowerCase() ?? '';
-        final description = job.description?.toLowerCase() ?? '';
         final location = job.location?.toLowerCase() ?? '';
         final jobType = job.jobType?.toLowerCase() ?? '';
         final jobLevel = job.jobLevel?.toLowerCase() ?? '';
-        final experience = job.experience?.toLowerCase() ?? '';
-        final skillsStr = (job.skills ?? []).join(' ').toLowerCase();
 
-        return title.contains(lowerQuery) ||
-            description.contains(lowerQuery) ||
+        return id.contains(lowerQuery) ||
+            title.contains(lowerQuery) ||
             location.contains(lowerQuery) ||
             jobType.contains(lowerQuery) ||
-            jobLevel.contains(lowerQuery) ||
-            experience.contains(lowerQuery) ||
-            skillsStr.contains(lowerQuery);
+            jobLevel.contains(lowerQuery);
       }).toList();
 
       _isLoading = false;
@@ -256,35 +217,33 @@ class JobController extends GetxController {
   }
 
   Future<void> toggleFavorite(String jobId) async {
-    // Find the job in either list
-    JobModel? job;
-    bool isInFavorites = false;
+    // Capture the current state before toggle
+    final wasFavorite = _currentJob?.isFavorite ?? false;
 
-    var jobIndex = _jobs.indexWhere((j) => j.id == jobId);
-    if (jobIndex != -1) {
-      job = _jobs[jobIndex];
-      isInFavorites = job.isFavorite ?? false;
-    } else {
-      jobIndex = _favoriteJobs.indexWhere((j) => j.id == jobId);
-      if (jobIndex != -1) {
-        job = _favoriteJobs[jobIndex];
-        isInFavorites =
-            true; // If it's in _favoriteJobs, it's definitely a favorite
-      }
+    // Update the current job if it matches
+    if (_currentJob?.id == jobId) {
+      _currentJob!.isFavorite = !wasFavorite;
     }
 
-    if (job == null) return;
+    // Also update in jobs list if it exists there
+    final jobInList = _jobs.firstWhereOrNull((job) => job.id == jobId);
+    if (jobInList != null) {
+      jobInList.isFavorite = !wasFavorite;
+    }
 
-    // Update UI optimistically
-    job.isFavorite = !isInFavorites;
+    // Update UI immediately
     update();
 
-    // Call the API
-    if (isInFavorites) {
+    // Call the API based on the original state
+    if (wasFavorite) {
       await removeFavoriteJob(jobId);
     } else {
       await addFavoriteJob(jobId);
     }
+  }
+
+  bool isFavorite(String jobId) {
+    return _favoriteJobs.any((job) => job.id == jobId);
   }
 
   Future<void> getFavoriteJobs() async {

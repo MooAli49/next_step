@@ -27,6 +27,7 @@ class LoginFormWidget extends GetView<AuthController> {
           ),
           VerticalSpace(20),
           GetBuilder<AuthController>(
+            id: 'password',
             builder: (controller) {
               return AppTextFormField(
                 controller: controller.passwordController,

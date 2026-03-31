@@ -1,5 +1,7 @@
-import 'package:get/get_navigation/src/routes/get_route.dart';
+import 'package:get/get.dart';
 
+import '../../features/apply/screens/apply_result_screen.dart';
+import '../../features/apply/screens/apply_screen.dart';
 import '../../features/auth/presentation/screens/login_screen.dart';
 import '../../features/auth/presentation/screens/register_screen.dart';
 import '../../features/jobs/presentation/screens/job_detail_screen.dart';
@@ -29,6 +31,8 @@ class Routes {
   static const String privacyPolicy = '/privacy-policy';
   static const String termsConditions = '/terms-conditions';
   static const String myApplications = '/my-applications';
+  static const String apply = '/apply';
+  static const String applyResult = '/apply-result';
 
   static List<GetPage> getPages = [
     GetPage(name: splash, page: () => SplashScreen()),
@@ -63,5 +67,16 @@ class Routes {
     GetPage(name: privacyPolicy, page: () => PrivacyPolicyScreen()),
     GetPage(name: termsConditions, page: () => TermsConditionsScreen()),
     GetPage(name: myApplications, page: () => MyApplicationsScreen()),
+    GetPage(name: apply, page: () => ApplyScreen()),
+    GetPage(
+      name: applyResult,
+      page: () {
+        final arguments = Get.arguments ?? {};
+        return ApplyResultScreen(
+          isSuccess: arguments['isSuccess'] ?? true,
+          jobId: arguments['jobId'],
+        );
+      },
+    ),
   ];
 }

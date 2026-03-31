@@ -108,6 +108,7 @@ class RegisterFormWidget extends GetView<AuthController> {
           ),
           VerticalSpace(15),
           GetBuilder<AuthController>(
+            id: 'password',
             builder: (context) {
               return AppTextFormField(
                 controller: controller.passwordController,
@@ -129,6 +130,7 @@ class RegisterFormWidget extends GetView<AuthController> {
           ),
           VerticalSpace(15),
           GetBuilder<AuthController>(
+            id: 'confirmPassword',
             builder: (context) {
               return AppTextFormField(
                 controller: controller.confirmPasswordController,
