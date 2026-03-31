@@ -7,7 +7,7 @@ import '../../../../core/networking/api_response_model.dart';
 import '../../../../core/networking/api_result.dart';
 import '../../../../core/networking/dio_factory.dart';
 import '../models/apply_request_model.dart';
-import '../models/user_applications_model/user_applications_model.dart';
+import '../models/user_application_job_model.dart';
 import 'apply_remote_data_source.dart';
 
 class ApiApplyDataSource extends ApplyRemoteDataSource {
@@ -57,16 +57,16 @@ class ApiApplyDataSource extends ApplyRemoteDataSource {
   }
 
   @override
-  Future<ApiResult<List<UserApplicationsModel>>> getUserApplications() async {
+  Future<ApiResult<List<UserApplicationJobModel>>> getUserApplications() async {
     try {
       final response = await dio.get(ApiConstant.getUserApplicationsEp);
 
       final apiResponse =
-          ApiResponseModel<List<UserApplicationsModel>>.fromJson(
+          ApiResponseModel<List<UserApplicationJobModel>>.fromJson(
             response.data,
             (json) => (json as List)
                 .map(
-                  (item) => UserApplicationsModel.fromJson(
+                  (item) => UserApplicationJobModel.fromJson(
                     item as Map<String, dynamic>,
                   ),
                 )
@@ -90,7 +90,7 @@ class ApiApplyDataSource extends ApplyRemoteDataSource {
       }
     } on Exception catch (e) {
       final apiResponse =
-          ApiResponseModel<List<UserApplicationsModel>>.fromJson(
+          ApiResponseModel<List<UserApplicationJobModel>>.fromJson(
             e is DioException && e.response != null ? e.response!.data : null,
             (json) => [],
           );

@@ -1,5 +1,5 @@
 import '../../../../core/networking/api_result.dart';
-import '../../../jobs/data/models/job_model.dart';
+import '../../data/models/job_model.dart';
 
 abstract class JobsRepository {
   Future<ApiResult<JobModel>> getJobDetails(String jobId);

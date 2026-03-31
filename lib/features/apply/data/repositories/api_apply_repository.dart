@@ -2,7 +2,7 @@ import '../../../../core/networking/api_result.dart';
 import '../../domain/repositories/apply_repo.dart';
 import '../datasources/apply_remote_data_source.dart';
 import '../models/apply_request_model.dart';
-import '../models/user_applications_model/user_applications_model.dart';
+import '../models/user_application_job_model.dart';
 
 class ApiApplyRepository extends ApplyRepo {
   final ApplyRemoteDataSource applyRemoteDataSource;
@@ -14,7 +14,7 @@ class ApiApplyRepository extends ApplyRepo {
   }
 
   @override
-  Future<ApiResult<List<UserApplicationsModel>>> getUserApplications() async {
+  Future<ApiResult<List<UserApplicationJobModel>>> getUserApplications() async {
     return await applyRemoteDataSource.getUserApplications();
   }
 

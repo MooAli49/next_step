@@ -17,14 +17,26 @@ class JobDetailScreen extends GetView<JobController> {
 
   @override
   Widget build(BuildContext context) {
-    // Get the jobId from route parameters when this screen is navigated to
-    final jobId = Get.parameters['jobId'];
-    log('JobDetailScreen.build() - jobId from route: $jobId');
+    // Get the jobId from route parameters or arguments when this screen is navigated to
+    final paramsJobId = Get.parameters['jobId'];
+    final args = Get.arguments;
+
+    String? jobId;
+    if (paramsJobId != null && paramsJobId.isNotEmpty) {
+      jobId = paramsJobId;
+    } else if (args is Map && args['jobId'] != null) {
+      final argJobId = args['jobId'].toString();
+      if (argJobId.isNotEmpty) {
+        jobId = argJobId;
+      }
+    }
+
+    log('JobDetailScreen.build() - jobId: $jobId');
 
     // Load job details when jobId is present
     if (jobId != null && jobId.isNotEmpty) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        controller.getJobDetails(jobId);
+        controller.getJobDetails(jobId!);
       });
     }
 

@@ -54,9 +54,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                 return SearchJobCardWidget(
                                   job: job,
                                   onBookmarkToggle: () {
-                                    if (job.id != null) {
-                                      controller.toggleFavorite(job.id!);
-                                    }
+                                    controller.toggleFavorite(job.id);
                                   },
                                 );
                               },

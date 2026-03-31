@@ -64,12 +64,12 @@ class AuthController extends GetxController {
 
   void toggleObscurePassword() {
     obscurePassword = !obscurePassword;
-    update();
+    update(['password']);
   }
 
   void toggleObscureConfirmPassword() {
     obscureConfirmPassword = !obscureConfirmPassword;
-    update();
+    update(['confirmPassword']);
   }
 
   Future<void> onLogin() async {

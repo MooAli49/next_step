@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../apply/data/models/user_applications_model/user_applications_model.dart';
+import '../../../apply/data/models/user_application_job_model.dart';
 import '../../../apply/domain/repositories/apply_repo.dart';
 import '../../domain/repositories/settings_repo.dart';
 
@@ -14,8 +14,8 @@ class MyApplicationsController extends GetxController {
     required this.applyRepo,
   });
 
-  List<UserApplicationsModel> allApplications = [];
-  List<UserApplicationsModel> filteredApplications = [];
+  List<UserApplicationJobModel> allApplications = [];
+  List<UserApplicationJobModel> filteredApplications = [];
 
   String selectedStatus = 'ALL';
 

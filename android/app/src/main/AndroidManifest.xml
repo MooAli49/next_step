@@ -1,6 +1,17 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Network access for API calls (Dio, Supabase, etc.) -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- Camera and media access for image_picker / file_picker -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <!-- Android 13+ media access -->
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
+    <!-- Older Android versions media access -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <application
-        android:label="next_step"
+        android:label="Next Step"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

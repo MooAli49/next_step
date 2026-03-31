@@ -61,6 +61,11 @@ class JobDetailHeader extends GetView<JobController> {
               child: Image.network(
                 controller.currentJob?.postedBy?.imageUrl ?? '',
                 fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) => Icon(
+                  Icons.image_not_supported_outlined,
+                  color: ColorManager.grey,
+                  size: 32.sp,
+                ),
               ),
             ),
             SizedBox(width: 16.w),

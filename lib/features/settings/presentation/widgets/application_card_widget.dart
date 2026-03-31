@@ -6,10 +6,10 @@ import 'package:intl/intl.dart';
 import '../../../../../core/styles/app_styles.dart';
 import '../../../../../core/theme/color_manager.dart';
 import '../../../../core/routing/routes.dart';
-import '../../../apply/data/models/user_applications_model/user_applications_model.dart';
+import '../../../apply/data/models/user_application_job_model.dart';
 
 class ApplicationCardWidget extends StatelessWidget {
-  final UserApplicationsModel application;
+  final UserApplicationJobModel application;
   final Function(String)? onDelete;
 
   const ApplicationCardWidget({
@@ -47,24 +47,43 @@ class ApplicationCardWidget extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Container(
+                height: 48.w,
+                width: 48.w,
+                padding: EdgeInsets.all(8.r),
+                decoration: BoxDecoration(
+                  color: ColorManager.greyF3,
+                  borderRadius: BorderRadius.circular(12.r),
+                ),
+                child: Image.network(
+                  application.jobInfo?.postedBy?.imageUrl ?? '',
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) => Icon(
+                    Icons.image_not_supported_outlined,
+                    color: ColorManager.grey,
+                    size: 24.sp,
+                  ),
+                ),
+              ),
+              SizedBox(width: 12.w),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      application.job?.title ?? 'Unknown Job',
+                      application.jobInfo?.title ?? 'Unknown Job',
                       style: AppStyles.font16w600,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
                     SizedBox(height: 4.h),
                     Text(
-                      application.job?.postedBy?.fullName ?? 'Unknown',
+                      application.coverLetter ?? 'Unknown',
                       style: TextStyle(
                         color: ColorManager.grey,
                         fontSize: 13.sp,
                       ),
-                      maxLines: 1,
+                      maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ],
@@ -108,10 +127,20 @@ class ApplicationCardWidget extends StatelessWidget {
               Expanded(
                 child: ElevatedButton(
                   onPressed: () {
-                    Get.toNamed(
-                      Routes.jobDetails,
-                      arguments: {'jobId': application.job?.id},
-                    );
+                    final jobId = application.jobInfo?.id ?? '';
+
+                    if (jobId.isNotEmpty) {
+                      Get.toNamed(
+                        Routes.jobDetails,
+                        parameters: {'jobId': jobId},
+                      );
+                    } else {
+                      Get.snackbar(
+                        'Job not available',
+                        'Could not open job details for this application.',
+                        snackPosition: SnackPosition.BOTTOM,
+                      );
+                    }
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: ColorManager.greyF3,
@@ -135,7 +164,7 @@ class ApplicationCardWidget extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: () {
                     if (onDelete != null) {
-                      onDelete!(application.id ?? '');
+                      onDelete!(application.id);
                     }
                   },
                   style: ElevatedButton.styleFrom(
@@ -178,26 +207,3 @@ class ApplicationCardWidget extends StatelessWidget {
     }
   }
 }
-
-/*
-  {
-    "id": "72979231-5641-4195-844f-cee9ef74192a",
-    "jobId": "56a8d11e-6eec-49a9-983e-02254c01459e",
-    "applicantId": "a3adf7b7-80e1-4c3e-8c8f-27894f6a2c88",
-    "coverLetter": "hi dear",
-    "resumeUrl": "https://cygiwbzhbqqgxeecttvh.supabase.co/storage/v1/object/public/cv-storage/cv_1774816369179_Flutter_Developer_Mohamed_Ali.pdf",
-    "status": "PENDING",
-    "appliedAt": "2026-03-29T20:34:09.035Z",
-    "job": {
-    "id": "56a8d11e-6eec-49a9-983e-02254c01459e",
-    "title": "Blockchain Developer",
-    "postedBy": {
-    "id": "550e8400-e29b-41d4-a716-446655440004",
-    "fullName": "David Davis",
-    "email": "recruiter3@nextstep.com",
-    "role": "RECRUITER",
-    "imageUrl": "https://www.4cornerresources.com/wp-content/uploads/2025/05/recruiter-having-trouble-finding-candidates.png"
-    }
-    }
-},
- */

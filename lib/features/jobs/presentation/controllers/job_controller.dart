@@ -26,16 +26,16 @@ class JobController extends GetxController {
 
   JobController(this._jobsRepository);
 
-  @override
-  void onInit() {
-    super.onInit();
-    // Get jobId from route parameters
-    final jobId = Get.parameters['jobId'];
+  // @override
+  // void onInit() {
+  //   super.onInit();
+  //   // Get jobId from route parameters
+  //   final jobId = Get.parameters['jobId'];
 
-    if (jobId != null && jobId.isNotEmpty) {
-      getJobDetails(jobId);
-    }
-  }
+  //   if (jobId != null && jobId.isNotEmpty) {
+  //     getJobDetails(jobId);
+  //   }
+  // }
 
   Future<void> getJobDetails(String jobId) async {
     _isLoading = true;
@@ -100,21 +100,17 @@ class JobController extends GetxController {
       // Filter jobs locally based on query
       final lowerQuery = query.toLowerCase();
       _jobs = _jobs.where((job) {
+        final id = job.id.toLowerCase();
         final title = job.title?.toLowerCase() ?? '';
-        final description = job.description?.toLowerCase() ?? '';
         final location = job.location?.toLowerCase() ?? '';
         final jobType = job.jobType?.toLowerCase() ?? '';
         final jobLevel = job.jobLevel?.toLowerCase() ?? '';
-        final experience = job.experience?.toLowerCase() ?? '';
-        final skillsStr = (job.skills ?? []).join(' ').toLowerCase();
 
-        return title.contains(lowerQuery) ||
-            description.contains(lowerQuery) ||
+        return id.contains(lowerQuery) ||
+            title.contains(lowerQuery) ||
             location.contains(lowerQuery) ||
             jobType.contains(lowerQuery) ||
-            jobLevel.contains(lowerQuery) ||
-            experience.contains(lowerQuery) ||
-            skillsStr.contains(lowerQuery);
+            jobLevel.contains(lowerQuery);
       }).toList();
 
       _isLoading = false;

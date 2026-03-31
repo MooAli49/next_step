@@ -22,8 +22,6 @@ class ApiJobsDataSource extends JobsDataSource {
         (json) => JobModel.fromJson(json),
       );
 
-      log('ApiJobsDataSource.getJobDetails: response: ${apiResponse.message}');
-
       if (apiResponse.data == null) {
         return ApiResult.error(
           ApiResponseModel(
